@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>声息花园 Sonic Grove</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="fireflies"></canvas>
+
+  <section class="screen active screen-home" id="screen-home">
+    <div class="veil"></div>
+    <div class="home-warmth" aria-hidden="true"></div>
+    <div class="screen-inner home-content">
+      <header class="home-head">
+        <p class="brand-en">SONIC GROVE</p>
+        <h1 class="invite">欢迎来到你的声息花园！</h1>
+        <p class="invite-2">把今天，放进一张花语唱片。</p>
+      </header>
+
+      <footer class="home-foot">
+        <button class="btn-mute" id="btn-mute" type="button" aria-label="背景音乐" title="背景音乐">♪</button>
+        <div class="home-companion" aria-hidden="true">
+          <svg viewBox="0 0 112 80" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="56" cy="70" rx="36" ry="6" fill="#000" opacity=".22"/>
+            <ellipse cx="56" cy="66" rx="42" ry="10" fill="#F1B968" opacity=".12"/>
+            <ellipse cx="58" cy="52" rx="38" ry="22" fill="#33525E"/>
+            <ellipse cx="58" cy="58" rx="30" ry="14" fill="#3E606C"/>
+            <path d="M90 50 Q104 60 86 68 Q74 72 64 66" fill="none" stroke="#2C4651" stroke-width="8" stroke-linecap="round"/>
+            <circle cx="34" cy="50" r="17" fill="#3A5A66"/>
+            <path d="M23 42 L19 28 L33 40 Z" fill="#3A5A66"/><path d="M45 40 L49 27 L37 39 Z" fill="#3A5A66"/>
+            <path d="M25 40 L23 31 L31 38 Z" fill="#5E7E88"/><path d="M43 38 L45 29 L39 37 Z" fill="#5E7E88"/>
+            <path d="M22 46 a17 17 0 0 1 13 -14" stroke="#FBE6B0" stroke-width="1.8" opacity=".42" fill="none" stroke-linecap="round"/>
+            <circle cx="28" cy="54" r="3" fill="#E89A55" opacity=".2"/>
+            <path d="M27 50 q4 3 8 0" stroke="#F1B968" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            <circle cx="40" cy="53" r="1.7" fill="#2A4048"/>
+            <g class="home-lamp"><circle cx="88" cy="60" r="5.5" fill="#F1B968"/><circle cx="88" cy="60" r="2.6" fill="#FBE6B0"/></g>
+            <text class="home-zzz" x="50" y="24" font-size="10" fill="#FBE6B0" opacity=".5" font-family="serif">z</text>
+            <text class="home-zzz home-zzz-2" x="59" y="15" font-size="7.5" fill="#FBE6B0" opacity=".4" font-family="serif">z</text>
+          </svg>
+        </div>
+        <button class="btn-press" id="btn-start" type="button">压唱片</button>
+      </footer>
+    </div>
+  </section>
+
+  <section class="screen screen-choose" id="screen-choose">
+    <div class="veil veil-soft"></div>
+    <div class="screen-inner choose-layout">
+      <header class="section-head">
+        <p class="brand-en">CHOOSE YOUR COMPANION</p>
+        <h2>此刻，选择谁来陪你守着花园中的这一小段安静？</h2>
+      </header>
+
+      <div class="choose-stage">
+        <button class="elf-option active" type="button" data-elf="yedu">
+          <span class="elf-glow"></span>
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <ellipse cx="50" cy="88" rx="22" ry="5" fill="#000" opacity=".18"/>
+            <path d="M67 60 q17 3 12 -17" stroke="#375361" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <ellipse cx="48" cy="61" rx="22" ry="17" fill="#3A5A66"/>
+            <circle cx="48" cy="39" r="18" fill="#3A5A66"/>
+            <path d="M35 31 L30 14 L45 29 Z" fill="#3A5A66"/><path d="M61 31 L66 14 L51 29 Z" fill="#3A5A66"/>
+            <ellipse cx="48" cy="66" rx="10" ry="10" fill="#5B7A85"/>
+            <path d="M37 40 q4 4 8 0" stroke="#F1B968" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <path d="M49 40 q4 4 8 0" stroke="#F1B968" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <circle cx="73" cy="67" r="6" fill="#F1B968"/><circle cx="73" cy="67" r="3" fill="#FBE6B0"/>
+          </svg>
+          <span class="elf-name">夜渡猫</span>
+          <span class="elf-sub">Yedu</span>
+        </button>
+
+        <button class="elf-option" type="button" data-elf="qiguang">
+          <span class="elf-glow"></span>
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <ellipse cx="50" cy="88" rx="22" ry="5" fill="#000" opacity=".16"/>
+            <path d="M32 61 q-12 3 -8 -12" stroke="#C8824A" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <ellipse cx="50" cy="62" rx="19" ry="15" fill="#C8824A"/>
+            <circle cx="50" cy="42" r="16" fill="#C8824A"/>
+            <path d="M37 34 L32 16 L48 30 Z" fill="#C8824A"/><path d="M63 34 L68 16 L52 30 Z" fill="#C8824A"/>
+            <ellipse cx="50" cy="48" rx="7" ry="5" fill="#EDD9C2"/>
+            <circle cx="45" cy="42" r="2" fill="#3A2A1E"/><circle cx="55" cy="42" r="2" fill="#3A2A1E"/>
+            <circle cx="27" cy="68" r="6" fill="#F1B968"/><circle cx="27" cy="68" r="3" fill="#FBE6B0"/>
+          </svg>
+          <span class="elf-name">栖光狐</span>
+          <span class="elf-sub">Qiguang</span>
+        </button>
+
+        <button class="elf-option" type="button" data-elf="taisheng">
+          <span class="elf-glow"></span>
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <ellipse cx="50" cy="88" rx="22" ry="5" fill="#000" opacity=".16"/>
+            <ellipse cx="50" cy="58" rx="23" ry="20" fill="#A9B89A"/>
+            <path d="M27 50 a22 17 0 0 1 46 0 Z" fill="#7E9A6E"/>
+            <ellipse cx="42" cy="46" rx="5" ry="3.5" fill="#9CB78A"/><ellipse cx="57" cy="43" rx="5" ry="3.5" fill="#9CB78A"/>
+            <ellipse cx="50" cy="50" rx="5" ry="3" fill="#88A982"/>
+            <path d="M40 61 q4 3 8 0" stroke="#3E4A38" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M51 61 q4 3 8 0" stroke="#3E4A38" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <ellipse cx="66" cy="42" rx="4" ry="3" fill="#E7C7C2"/>
+          </svg>
+          <span class="elf-name">苔生团</span>
+          <span class="elf-sub">Taisheng</span>
+        </button>
+
+        <button class="elf-option" type="button" data-elf="xuan">
+          <span class="elf-glow"></span>
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <ellipse cx="50" cy="88" rx="22" ry="5" fill="#000" opacity=".16"/>
+            <circle cx="34" cy="50" r="10" fill="#F2E9D8"/><circle cx="66" cy="50" r="10" fill="#F2E9D8"/>
+            <circle cx="41" cy="40" r="10" fill="#F2E9D8"/><circle cx="59" cy="40" r="10" fill="#F2E9D8"/><circle cx="50" cy="34" r="8" fill="#F2E9D8"/>
+            <ellipse cx="50" cy="56" rx="21" ry="17" fill="#F2E9D8"/>
+            <ellipse cx="50" cy="53" rx="11" ry="11" fill="#E8DAC6"/>
+            <path d="M44 54 q3 3 6 0" stroke="#9A7E66" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M52 54 q3 3 6 0" stroke="#9A7E66" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+          <span class="elf-name">絮安羊</span>
+          <span class="elf-sub">Xuan</span>
+        </button>
+      </div>
+
+      <div class="glass-panel elf-bubble" id="elf-bubble">
+        <p class="bubble-mark">YEDU IS LISTENING</p>
+        <h3 id="elf-title">夜渡猫</h3>
+        <p id="elf-desc">守夜的时候，它会把你说不出口的疲惫，轻轻放进一盏小灯里。今晚的黄金路径，由它来接你。</p>
+      </div>
+
+      <footer class="choose-actions">
+        <p class="soft-tip" id="choose-tip">Demo 主路径已为你点亮夜渡。</p>
+        <button class="glass-btn" id="btn-choose-continue" type="button">听夜渡说说话</button>
+      </footer>
+    </div>
+  </section>
+
+  <section class="screen screen-chat" id="screen-chat">
+    <div class="veil veil-chat"></div>
+    <div class="screen-inner chat-layout">
+      <header class="section-head">
+        <p class="brand-en">SOFT LISTENING SESSION</p>
+        <h2>夜渡在这儿，慢慢放松你的思绪</h2>
+      </header>
+
+      <div class="chat-stage" id="chat-stage"></div>
+
+      <footer class="chat-actions">
+        <p class="soft-tip hidden" id="chat-tip"></p>
+        <button class="glass-btn hidden" id="btn-to-engrave" type="button" disabled>开始刻录这一晚</button>
+      </footer>
+
+      <div class="diary-overlay hidden" id="diary-overlay" role="dialog" aria-modal="true" aria-label="记录今天">
+        <div class="diary-panel glass-panel" id="diary-panel">
+          <div class="diary-head">
+            <p class="bubble-mark">RECORD TODAY</p>
+            <button type="button" class="diary-close" id="diary-close" aria-label="关闭">×</button>
+          </div>
+          <h3 class="diary-title">写下今天的小日记</h3>
+          <p class="diary-sub">可以用语音，也可以用文字。记下就好，不必完整。</p>
+
+          <div class="diary-actions">
+            <button type="button" class="diary-rec" id="diary-rec">
+              <span class="rec-dot" aria-hidden="true"></span>
+              <span id="diary-rec-text">按住录音</span>
+              <span class="rec-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            </button>
+            <p class="diary-hint" id="diary-hint">松手即保存，每一天都是独一无二的。</p>
+          </div>
+
+          <div class="diary-text">
+            <textarea id="diary-textarea" rows="3" placeholder="写下今天的小日记…"></textarea>
+            <button type="button" class="glass-btn diary-save" id="diary-save">记下</button>
+          </div>
+
+          <button type="button" class="ghost-btn diary-skip" id="diary-skip">跳过</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen screen-engrave" id="screen-engrave">
+    <div class="veil veil-deep"></div>
+    <div class="screen-inner engrave-layout">
+      <header class="section-head">
+        <p class="brand-en">HOLD TO ETCH THE RECORD</p>
+        <h2>按住中央，把今晚压进一圈圈柔软的纹路里。</h2>
+      </header>
+
+      <div class="engrave-stage" id="engrave-stage">
+        <div class="polaroid" id="polaroid">
+          <div class="polaroid-frame">
+            <img src="assets/cover_evening_primrose.png" alt="月见草封面">
+          </div>
+          <p>Evening Primrose · No.0006</p>
+          <div class="bloom-glow" aria-hidden="true"></div>
+        </div>
+
+        <div class="engrave-disc-wrap" id="engrave-disc-wrap">
+          <button class="engrave-core" id="engrave-core" type="button" aria-label="长按刻录">
+            <span class="engrave-ring"></span>
+            <span class="engrave-ring engrave-ring-inner"></span>
+            <span class="engrave-label">长按<br>刻录</span>
+            <span class="engrave-time">1.5s</span>
+            <div class="engrave-grooves">
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <canvas class="scratch-canvas" id="scratch-canvas" aria-hidden="true"></canvas>
+          </button>
+          <svg class="engrave-arm" viewBox="0 0 140 170" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="26" cy="158" r="8" fill="#3b424a" stroke="#c6ccd8" stroke-width="1.6"/>
+            <line x1="26" y1="150" x2="74" y2="58" stroke="#c6ccd8" stroke-width="5" stroke-linecap="round"/>
+            <rect x="68" y="52" width="18" height="11" rx="2.5" fill="#c6ccd8" transform="rotate(-53 68 52)"/>
+            <circle cx="73" cy="57" r="2" fill="#101315"/>
+          </svg>
+        </div>
+
+        <div class="engrave-fire" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+
+        <div class="scratch-flower hidden" id="scratch-flower" aria-hidden="true">绕一圈，今天就收好了</div>
+      </div>
+
+      <footer class="engrave-foot">
+        <p class="soft-tip" id="engrave-tip">按住不放，直到封面显影完整。</p>
+      </footer>
+    </div>
+  </section>
+
+  <section class="screen screen-reveal" id="screen-reveal">
+    <div class="veil veil-soft"></div>
+    <div class="screen-inner reveal-layout">
+      <header class="section-head reveal-head">
+        <p class="brand-en">BLOOM RECORD REVEALED</p>
+        <h2>睡个好觉！这是属于你的花语唱片</h2>
+      </header>
+
+      <div class="reveal-hero reveal-step" data-step="1">
+        <div class="record-jacket reveal-jacket">
+          <div class="vinyl-record" style="--vinyl-size:88%">
+            <div class="vinyl-disc"></div>
+            <div class="vinyl-grooves"></div>
+            <div class="vinyl-dust"></div>
+            <div class="vinyl-label"><img src="assets/cover_evening_primrose.png" alt=""></div>
+            <div class="vinyl-sheen"></div>
+            <div class="vinyl-shine"></div>
+          </div>
+          <div class="record-sleeve"><img src="assets/cover_evening_primrose.png" alt="月见草 No.0006 封面"></div>
+        </div>
+        <div class="vinyl-reveal-spin" aria-hidden="true"></div>
+      </div>
+
+      <div class="reveal-info">
+        <div class="info-group">
+          <p class="record-no reveal-step" data-step="2" id="record-no">No.0006</p>
+          <h3 class="reveal-step" data-step="3" id="record-title">灯熄以后，光还在</h3>
+          <hr class="info-rule" aria-hidden="true">
+        </div>
+        <div class="info-group">
+          <p class="record-plant reveal-step" data-step="4" id="record-plant">月见草</p>
+          <p class="record-en reveal-step" data-step="5" id="record-anchor">锚定歌《光》 · 陈粒</p>
+          <hr class="info-rule" aria-hidden="true">
+        </div>
+        <div class="record-sides reveal-step" data-step="6">
+          <span id="record-side-a">A 面 · 落地</span>
+          <span id="record-side-b">B 面 · 留白</span>
+        </div>
+        <p class="record-words reveal-step" data-step="7" id="record-words">"没人看，也会开。"</p>
+      </div>
+
+      <div class="reveal-actions reveal-step" data-step="8">
+        <button class="glass-btn" id="btn-drop-needle" type="button">落针播放</button>
+      </div>
+
+      <div class="reveal-foot">
+        <button type="button" class="side-note-trigger" id="side-note-trigger">翻看侧记 ›</button>
+        <article class="glass-panel side-note hidden" id="side-note">
+          <p class="bubble-mark">FIELD NOTE</p>
+          <p id="record-note">月见草是夜里才开的花。没人看，它也开。今天没有被谁看见，可你也好好地活过了一天。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen screen-playback" id="screen-playback">
+    <div class="veil veil-playback"></div>
+    <div class="sleep-veil" aria-hidden="true"></div>
+    <div class="screen-inner playback-layout">
+      <header class="section-head playback-head">
+        <div>
+          <p class="brand-en">A SIDE / B SIDE DREAM WALK</p>
+          <h2>让唱针慢一点落下去。</h2>
+          <p class="playback-sub" id="playback-sub">No.0006 · 灯熄以后，光还在 · 《光》陈粒</p>
+        </div>
+        <div class="playback-meta">
+          <span id="playback-phase">A 面 · 安放</span>
+          <span id="playback-clock">00:00 / 01:30</span>
+        </div>
+      </header>
+
+      <div class="playback-stage">
+        <div class="breath-orbit">
+          <span class="breath-ring"></span>
+          <span class="breath-ring breath-ring-delay"></span>
+        </div>
+
+        <div class="playback-disc-wrapper" id="playback-disc-wrapper">
+          <svg class="playback-record" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <clipPath id="lbl-play"><circle cx="160" cy="160" r="48"/></clipPath>
+              <radialGradient id="pb-groove" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#090C10"/>
+                <stop offset="58%" stop-color="#11161c"/>
+                <stop offset="85%" stop-color="#0d1014"/>
+                <stop offset="100%" stop-color="#06080a"/>
+              </radialGradient>
+              <radialGradient id="pb-sheen" cx="38%" cy="30%" r="62%">
+                <stop offset="0" stop-color="#FBF6E9" stop-opacity=".15"/>
+                <stop offset="55%" stop-color="#FBF6E9" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="pb-shine" x1="0" y1="0" x2="1" y2="1">
+                <stop offset=".32" stop-color="#FBF6E9" stop-opacity="0"/>
+                <stop offset=".48" stop-color="#FBF6E9" stop-opacity=".13"/>
+                <stop offset=".63" stop-color="#FBF6E9" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <g class="pb-disc">
+              <circle cx="160" cy="160" r="140" fill="url(#pb-groove)"/>
+              <circle cx="160" cy="160" r="140" fill="none" stroke="#F1B968" stroke-width="1.4" opacity=".14"/>
+              <g fill="none" stroke="#1f252c" stroke-width=".8">
+                <circle cx="160" cy="160" r="136"/><circle cx="160" cy="160" r="130"/><circle cx="160" cy="160" r="124"/>
+                <circle cx="160" cy="160" r="118"/><circle cx="160" cy="160" r="112"/><circle cx="160" cy="160" r="106"/>
+                <circle cx="160" cy="160" r="100"/><circle cx="160" cy="160" r="94"/>
+                <circle cx="160" cy="160" r="88"/><circle cx="160" cy="160" r="82"/>
+              </g>
+              <g fill="none" stroke="#2a3039" stroke-width=".5" opacity=".5">
+                <circle cx="160" cy="160" r="133"/><circle cx="160" cy="160" r="127"/><circle cx="160" cy="160" r="121"/>
+                <circle cx="160" cy="160" r="115"/><circle cx="160" cy="160" r="109"/><circle cx="160" cy="160" r="103"/>
+                <circle cx="160" cy="160" r="97"/><circle cx="160" cy="160" r="91"/>
+                <circle cx="160" cy="160" r="85"/><circle cx="160" cy="160" r="79"/>
+              </g>
+              <circle cx="160" cy="160" r="78" fill="none" stroke="#3a3230" stroke-width="1" opacity=".4"/>
+              <circle cx="160" cy="160" r="64" fill="#F1B968"/>
+              <circle cx="160" cy="160" r="64" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="1"/>
+              <image href="assets/cover_evening_primrose.png" x="112" y="112" width="96" height="96" clip-path="url(#lbl-play)" preserveAspectRatio="xMidYMid slice"/>
+              <circle cx="160" cy="160" r="7" fill="#101315"/>
+            </g>
+            <circle cx="160" cy="160" r="140" fill="url(#pb-sheen)" pointer-events="none"/>
+            <circle cx="160" cy="160" r="140" fill="url(#pb-shine)" pointer-events="none"/>
+            <path d="M78 60 A134 134 0 0 1 214 48" fill="none" stroke="#FBF6E9" stroke-opacity=".06" stroke-width="28" pointer-events="none"/>
+            <g class="pb-arm">
+              <line x1="278" y1="46" x2="244" y2="92" stroke="#c6ccd8" stroke-width="5.5" stroke-linecap="round"/>
+              <circle cx="280" cy="43" r="10" fill="#33435f" stroke="#c6ccd8" stroke-width="1.8"/>
+              <rect x="238" y="86" width="18" height="11" rx="2.5" fill="#c6ccd8" transform="rotate(-54 238 86)"/>
+              <circle cx="244" cy="92" r="2" fill="#101315"/>
+            </g>
+          </svg>
+        </div>
+
+        <svg class="floor-curve" viewBox="0 0 340 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M10 86 C76 35 126 100 170 86 C214 72 252 18 330 56" fill="none" stroke="rgba(244,236,219,.22)" stroke-width="1.2"/>
+          <path id="curve-progress" d="M10 86 C76 35 126 100 170 86 C214 72 252 18 330 56" fill="none" stroke="#F1B968" stroke-width="2.1" stroke-linecap="round"/>
+        </svg>
+
+        <div class="ab-markers">
+          <span class="ab-pill active" id="marker-a">A</span>
+          <span class="ab-pill" id="marker-b">B</span>
+        </div>
+
+        <div class="yedu-nap" id="yedu-nap" aria-hidden="true">
+          <svg viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="45" cy="74" rx="28" ry="4" fill="#000" opacity=".16"/>
+            <ellipse cx="45" cy="72" rx="30" ry="5" fill="#F1B968" opacity=".06"/>
+            <ellipse cx="42" cy="50" rx="18" ry="13" fill="#2E4A55"/>
+            <ellipse cx="42" cy="53" rx="11" ry="8" fill="#3A5A66"/>
+            <circle cx="42" cy="36" r="12" fill="#3A5A66"/>
+            <path d="M32 31 L27 17 L42 28 Z" fill="#3A5A66"/><path d="M52 31 L56 16 L46 28 Z" fill="#3A5A66"/>
+            <path d="M29 39 q3 2 7 -1" stroke="#F1B968" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            <path d="M46 39 q4 2 5 -1" stroke="#F1B968" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            <circle cx="23" cy="62" r="4.5" fill="#F1B968" opacity=".35"/>
+            <circle cx="23" cy="62" r="2" fill="#FBE6B0" opacity=".5"/>
+          </svg>
+          <div class="yedu-whisper hidden" id="yedu-whisper"></div>
+          <div class="yedu-goodnight hidden" id="yedu-goodnight">晚安</div>
+        </div>
+
+        <div class="pb-skip-btns" aria-hidden="true">
+          <button type="button" class="skip-btn" id="skip-b" title="跳到B面">B面</button>
+          <button type="button" class="skip-btn" id="skip-end" title="收尾">收尾</button>
+        </div>
+        <button class="btn-mute-pb" id="btn-mute-pb" type="button" aria-label="静音" title="静音">♪</button>
+      </div>
+
+      <footer class="playback-foot">
+        <label class="volume-panel glass-panel" for="volume-slider">
+          <span>主音量</span>
+          <input id="volume-slider" type="range" min="0" max="100" value="78">
+        </label>
+        <button class="eyes-closed-btn" id="btn-eyes-closed" type="button">闭上眼睛</button>
+        <p class="eyes-closed-hint hidden" id="eyes-closed-hint">接下来不用看屏幕了，交给我。</p>
+        <div class="breath-end hidden" id="breath-end" aria-hidden="true">
+          <span></span><span></span><span></span>
+          <p>晚安</p>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <section class="screen screen-shelf" id="screen-shelf">
+    <div class="veil veil-soft"></div>
+    <button class="btn-mute-shelf" id="btn-mute-shelf" type="button" aria-label="静音" title="静音">♪</button>
+    <div class="screen-inner shelf-layout">
+      <header class="section-head">
+        <p class="brand-en">PLANTED IN THE GARDEN</p>
+        <h2>这一晚，被轻轻安放进花园。</h2>
+      </header>
+
+      <div class="shelf-garden">
+        <div class="shelf-hero">
+          <div class="planted-glow" aria-hidden="true"></div>
+          <button class="series-hero" type="button" id="hero-disc" tabindex="0">
+            <div class="record-jacket hero-jacket">
+              <div class="vinyl-record" style="--vinyl-size:86%">
+                <div class="vinyl-disc"></div>
+                <div class="vinyl-grooves"></div>
+                <div class="vinyl-dust"></div>
+                <div class="vinyl-label"><img src="assets/cover_evening_primrose.png" alt=""></div>
+                <div class="vinyl-sheen"></div>
+                <div class="vinyl-shine"></div>
+              </div>
+              <div class="record-sleeve"><img src="assets/cover_evening_primrose.png" alt="月见草 No.0006"></div>
+            </div>
+          </button>
+          <p class="hero-no">No.0006 · 今晚这一张</p>
+        </div>
+
+        <div class="shelf-rack">
+          <div class="rack-records">
+            <button type="button" class="series-disc" data-no="No.0002" data-plant="薰衣草" data-words="等一等，香气会自己回来" data-bgm="perfume——mehro" style="--g1:#b8a6d8;--g2:#5f5090">
+              <img src="assets/cover_a%20sprig%20of%20lavender.png" alt="" onerror="this.classList.add('img-fail')"><span>No.0002</span>
+            </button>
+            <button type="button" class="series-disc" data-no="No.0003" data-plant="睡莲" data-words="睡吧，水会将你托住" data-bgm="枕旧书——鸦青" style="--g1:#9fd6cf;--g2:#3f7e86">
+              <img src="assets/cover_a%20water%20lily.png" alt="" onerror="this.classList.add('img-fail')"><span>No.0003</span>
+            </button>
+            <button type="button" class="series-disc" data-no="No.0004" data-plant="蓝铃花" data-words="低着头，也在轻轻奏响" data-bgm="DREAM——seventeen" style="--g1:#9bb4e6;--g2:#46568f">
+              <img src="assets/cover_a%20cluster%20of%20hanging%20bluebells.png" alt="" onerror="this.classList.add('img-fail')"><span>No.0004</span>
+            </button>
+            <button type="button" class="series-disc" data-no="No.0005" data-plant="蒲公英" data-words="松开手，它就会飞翔" data-bgm="春雷——米津玄师" style="--g1:#e8d9a8;--g2:#a98a4f">
+              <img src="assets/cover_a%20dandelion%20seed%20head.png" alt="" onerror="this.classList.add('img-fail')"><span>No.0005</span>
+            </button>
+          </div>
+          <div class="rack-wood" aria-hidden="true"><span></span><span></span></div>
+        </div>
+      </div>
+
+      <div class="shelf-copy">
+        <p class="record-en">EVENING PRIMROSE RECORD STORED</p>
+        <p class="shelf-note" id="shelf-note">No.0006 · 月见草 · 灯熄以后，光还在</p>
+        <p class="shelf-title">把说不清的疲惫，轻轻安放。</p>
+        <p class="shelf-aside">晚安，声息花园永远在这里。</p>
+        <button class="shelf-loop" id="btn-replay" type="button">再压一张今晚的</button>
+      </div>
+
+      <div class="bloom-overlay hidden" id="bloom-overlay" aria-hidden="true"></div>
+      <div class="bloom-card hidden" id="bloom-card" role="dialog" aria-label="唱片花语" aria-modal="true">
+        <button type="button" class="bloom-close" id="bloom-close" aria-label="关闭">&times;</button>
+        <div class="bloom-cover" id="bloom-cover-img"></div>
+        <p class="bloom-no" id="bloom-no"></p>
+        <p class="bloom-plant" id="bloom-plant"></p>
+        <p class="bloom-words" id="bloom-words"></p>
+        <div class="bloom-bgm-row">
+          <p class="bloom-bgm" id="bloom-bgm"></p>
+          <button type="button" class="bloom-play" id="bloom-play-btn" aria-label="播放试听">▶</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
