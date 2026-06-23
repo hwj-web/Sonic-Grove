@@ -220,7 +220,7 @@
       rain: 'assets/rain_loop.mp3',
       chime: 'assets/soft_magical_chime.mp3',
       needle: 'assets/falling_needle.mp3',
-      bgm: 'assets/BGM_Sonic%20Grove.mp3'
+      bgm: 'assets/BGM_Sonic_Grove.mp3'
     },
     ensureContext: function () {
       if (!this.context) {
@@ -238,7 +238,7 @@
       const url = this.files[key];
       if (!url) return null;
       const audio = new Audio(url);
-      audio.preload = 'auto';
+      audio.preload = 'none';
       audio.loop = !!loop;
       audio.crossOrigin = 'anonymous';
       return audio;
