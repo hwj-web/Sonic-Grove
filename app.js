@@ -218,8 +218,8 @@
       music: 'assets/anchor_guang_sleep_edit.mp3',
       pink: 'assets/pink_noise_loop.mp3',
       rain: 'assets/rain_loop.mp3',
-      chime: 'assets/soft%20magical%20chime.mp3',
-      needle: 'assets/falling%20needle.mp3',
+      chime: 'assets/soft_magical_chime.mp3',
+      needle: 'assets/falling_needle.mp3',
       bgm: 'assets/BGM_Sonic%20Grove.mp3'
     },
     ensureContext: function () {
@@ -240,6 +240,7 @@
       const audio = new Audio(url);
       audio.preload = 'auto';
       audio.loop = !!loop;
+      audio.crossOrigin = 'anonymous';
       return audio;
     },
     unlock: function () {
