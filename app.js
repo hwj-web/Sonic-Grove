@@ -240,7 +240,7 @@
       const audio = new Audio(url);
       audio.preload = 'none';
       audio.loop = !!loop;
-      audio.crossOrigin = 'anonymous';
+      
       return audio;
     },
     unlock: function () {
@@ -448,7 +448,7 @@
   }
 
   function appendYedu(text) {
-    appendToChat('<article class="chat-bubble from-yedu"><img class="yedu-avatar" src="assets/YEDU_chatcover.png" alt="" aria-hidden="true"><div class="yedu-text"><p class="bubble-mark">YEDU</p><p>' + text + '</p></div></article>');
+    appendToChat('<article class="chat-bubble from-yedu"><img class="yedu-avatar" src="assets/YEDU_chatcover.webp" alt="" aria-hidden="true"><div class="yedu-text"><p class="bubble-mark">YEDU</p><p>' + text + '</p></div></article>');
   }
 
   function appendUser(text) {
@@ -1339,7 +1339,7 @@
     var heroBtn = document.getElementById('hero-disc');
     if (heroBtn) {
       heroBtn.addEventListener('click', function () {
-        open('No.0006', '月见草', '没人看，也会开。', 'assets/cover_evening_primrose.png', '光——陈粒');
+        open('No.0006', '月见草', '没人看，也会开。', 'assets/cover_evening_primrose.webp', '光——陈粒');
       });
     }
 
