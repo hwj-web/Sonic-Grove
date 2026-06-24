@@ -240,7 +240,23 @@
       const audio = new Audio(url);
       audio.preload = 'none';
       audio.loop = !!loop;
-      
+      audio._sgLoaded = false;
+      return audio;
+    },
+    getAudio: function (name, loop) {
+      var audio = this.pool[name];
+      if (!audio) {
+        audio = this.createAudio(name, !!loop);
+        if (!audio) return null;
+        this.pool[name] = audio;
+      }
+      audio.loop = !!loop;
+      return audio;
+    },
+    loadAudio: function (audio) {
+      if (!audio || audio._sgLoaded) return audio;
+      audio.load();
+      audio._sgLoaded = true;
       return audio;
     },
     unlock: function () {
@@ -251,63 +267,51 @@
         this.context.resume().catch(function () {});
       }
 
-      this.pool.voice = this.createAudio('voice', false);
-      this.pool.music = this.createAudio('music', false);
-      this.pool.pink = this.createAudio('pink', true);
-      this.pool.rain = this.createAudio('rain', true);
-      this.pool.needle = this.createAudio('needle', false);
-      this.pool.chime = this.createAudio('chime', false);
-      this.pool.bgm = this.createAudio('bgm', true);
-
-      // 预热所有音频：在用户手势中 play→pause 一次，浏览器释放播放权限
-      Object.keys(this.pool).forEach(function (name) {
-        const audio = Sound.pool[name];
-        if (!audio) return;
-        audio.volume = 0;
-        audio.muted = true;
-        audio.play().then(function () {
-          audio.pause();
-          audio.currentTime = 0;
-          audio.volume = name === 'bgm' ? 0.18 : 1;
-          audio.muted = false;
-        }).catch(function () {});
-      });
+      this.getAudio('voice', false);
+      this.getAudio('music', false);
+      this.getAudio('pink', true);
+      this.getAudio('rain', true);
+      this.getAudio('needle', false);
+      this.getAudio('chime', false);
+      this.getAudio('bgm', true);
     },
     playFile: function (name, volume, loop) {
       if (!this.unlocked) return null;
-      var audio = this.pool[name];
-      if (audio) {
-        audio.currentTime = 0;
-        audio.volume = volume == null ? 1 : volume;
-        audio.loop = !!loop;
-        audio.play().catch(function () {});
-        return audio;
-      }
-      audio = this.createAudio(name, !!loop);
+      var audio = this.getAudio(name, !!loop);
       if (!audio) return null;
+      this.loadAudio(audio);
+      audio.pause();
+      audio.currentTime = 0;
       audio.volume = volume == null ? 1 : volume;
-      audio.muted = true;
-      audio.play().then(function () {
-        audio.muted = false;
-      }).catch(function () {});
+      audio.loop = !!loop;
+      audio.play().catch(function () {});
       return audio;
     },
     playAmbient: function () {
       this.unlock();
-      if (this.pool.rain) {
-        this.pool.rain.loop = true;
-        this.pool.rain.currentTime = 0;
-        this.pool.rain.play().catch(function () {});
+      var rain = this.getAudio('rain', true);
+      var pink = this.getAudio('pink', true);
+      var music = this.getAudio('music', false);
+      if (rain) {
+        this.loadAudio(rain);
+        rain.loop = true;
+        rain.currentTime = 0;
+        rain.volume = clamp(0.3 * state.playbackVolume, 0, 1);
+        rain.play().catch(function () {});
       }
-      if (this.pool.pink) {
-        this.pool.pink.loop = true;
-        this.pool.pink.currentTime = 0;
-        this.pool.pink.play().catch(function () {});
+      if (pink) {
+        this.loadAudio(pink);
+        pink.loop = true;
+        pink.currentTime = 0;
+        pink.volume = clamp(0.15 * state.playbackVolume, 0, 1);
+        pink.play().catch(function () {});
       }
-      if (this.pool.music) {
-        this.pool.music.loop = false;
-        this.pool.music.currentTime = 0;
-        this.pool.music.play().catch(function () {});
+      if (music) {
+        this.loadAudio(music);
+        music.loop = false;
+        music.currentTime = 0;
+        music.volume = clamp(0.8 * state.playbackVolume, 0, 1);
+        music.play().catch(function () {});
       }
     },
     stopAmbient: function () {
@@ -320,11 +324,13 @@
     },
     startBgm: function () {
       if (state.bgmMuted) return;
-      if (!this.pool.bgm) return;
-      this.pool.bgm.volume = 0.18;
-      this.pool.bgm.loop = true;
-      if (this.pool.bgm.paused) {
-        this.pool.bgm.play().catch(function () {});
+      var bgm = this.getAudio('bgm', true);
+      if (!bgm) return;
+      this.loadAudio(bgm);
+      bgm.volume = 0.18;
+      bgm.loop = true;
+      if (bgm.paused) {
+        bgm.play().catch(function () {});
       }
     },
     pauseBgm: function () {
@@ -351,11 +357,14 @@
       if (this.pool.pink) this.pool.pink.volume = clamp(pinkVolume * state.playbackVolume, 0, 1);
     },
     playVoice: function () {
-      if (!this.unlocked || !this.pool.voice) return;
-      this.pool.voice.pause();
-      this.pool.voice.currentTime = 0;
-      this.pool.voice.volume = 0.85;
-      this.pool.voice.play().catch(function () {});
+      if (!this.unlocked) return;
+      var voice = this.getAudio('voice', false);
+      if (!voice) return;
+      this.loadAudio(voice);
+      voice.pause();
+      voice.currentTime = 0;
+      voice.volume = 0.6;
+      voice.play().catch(function () {});
     },
     synth: function (kind, freq) {
       if (!this.unlocked) return;
@@ -781,18 +790,18 @@
       ui.playbackPhase.textContent = 'A 面 · 安放';
       ui.markerA.classList.add('active');
       ui.markerB.classList.remove('active');
-      Sound.setAmbientVolumes(0.92, 0.38, 0.16);
+      Sound.setAmbientVolumes(0.8, 0.3, 0.15);
     } else if (elapsed <= timeline.bridgeEnd) {
       const bridge = (elapsed - timeline.aEnd) / (timeline.bridgeEnd - timeline.aEnd);
       ui.playbackPhase.textContent = '过渡 · 夜色渐深';
       ui.markerA.classList.add('active');
       ui.markerB.classList.add('active');
-      Sound.setAmbientVolumes(fadeOut(Sound.pool.music, 0.92, bridge), 0.42, 0.22);
+      Sound.setAmbientVolumes(fadeOut(Sound.pool.music, 0.8, bridge), 0.3 + (0.2 * bridge), 0.15);
     } else if (elapsed <= timeline.bEnd) {
       ui.playbackPhase.textContent = 'B 面 · 只剩呼吸与雨';
       ui.markerA.classList.remove('active');
       ui.markerB.classList.add('active');
-      Sound.setAmbientVolumes(0, 0.48, 0.3);
+      Sound.setAmbientVolumes(0, 0.5, 0.15);
     } else {
       const fade = clamp((elapsed - timeline.bEnd) / (timeline.total - timeline.bEnd), 0, 1);
       ui.playbackPhase.textContent = '晚安 · 渐隐';
@@ -800,7 +809,7 @@
       ui.markerB.classList.add('active');
       if (fade >= 0.2) { ui.goodnight.classList.remove('hidden'); ui.goodnight.classList.add('show'); }
       else { ui.goodnight.classList.add('hidden'); ui.goodnight.classList.remove('show'); }
-      Sound.setAmbientVolumes(0, fadeOut(Sound.pool.rain, 0.48, fade), fadeOut(Sound.pool.pink, 0.3, fade));
+      Sound.setAmbientVolumes(0, fadeOut(Sound.pool.rain, 0.5, fade), fadeOut(Sound.pool.pink, 0.15, fade));
     }
 
     if (elapsed < timeline.total) {
@@ -822,9 +831,9 @@
     document.getElementById('screen-playback').classList.add('playing');
     ui.goodnight.classList.add('hidden');
     ui.goodnight.classList.remove('show');
-    Sound.playFile('needle', 0.85, false);
+    Sound.playFile('needle', 0.7, false);
     Sound.playAmbient();
-    Sound.setAmbientVolumes(0.92, 0.38, 0.16);
+    Sound.setAmbientVolumes(0.8, 0.3, 0.15);
     state.playbackStartedAt = performance.now();
     state.playbackRaf = requestAnimationFrame(updatePlaybackLoop);
     state.playbackTimeout = window.setTimeout(function () {
@@ -896,7 +905,6 @@
     setEngraveProgress(1);
     ui.engraveCore.classList.remove('holding');
     ui.engraveTip.textContent = '刻录完成。月见草已经发亮。';
-    Sound.playFile('chime', 0.7, false);
     Sound.synth('reveal');
     document.getElementById('polaroid').classList.add('bloomed');
     window.setTimeout(function () {
@@ -959,7 +967,7 @@
     state.holding = true;
     state.holdStartAt = performance.now();
     ui.engraveCore.classList.add('holding');
-    Sound.playFile('chime', 0.3, false);
+    Sound.playFile('chime', 0.5, false);
     clearScratchCanvas();
     scratchAngles = [];
     scratchCircleDone = false;
