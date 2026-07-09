@@ -30,6 +30,107 @@
     }
   };
 
+  const fallbackSongs = [
+    {
+      recordNo: 'No.0006',
+      title: '灯熄以后，光还在',
+      plant: '月见草',
+      flowerWords: '没人看，也会开',
+      note: '月见草是夜里才开的花。没人看，它也开。今天没有被谁看见，可你也好好地活过了一天。',
+      anchorSong: { title: '光', artist: '陈粒' },
+      sideA: '落地',
+      sideB: '留白',
+      suitableMood: '停不下来的思考 / 困但清醒 / 想平静下来',
+      coverUrl: 'assets/cover_evening_primrose.webp'
+    },
+    {
+      recordNo: 'No.0007',
+      title: '慢慢地，也算抵达',
+      plant: '薰衣草',
+      flowerWords: '等一等，香气会自己回来',
+      note: '薰衣草不是一下子香起来的。它要晒过光，也要等过风。今晚不必急着好起来，慢一点，香气会自己回来。',
+      anchorSong: { title: '慢慢喜欢你', artist: '莫文蔚' },
+      sideA: '放慢',
+      sideB: '回温',
+      suitableMood: '疲惫 / 想被安慰 / 需要一点温柔陪伴',
+      coverUrl: 'assets/cover_a_sprig_of_lavender.webp'
+    },
+    {
+      recordNo: 'No.0008',
+      title: '夜里也有花开',
+      plant: '睡莲',
+      flowerWords: '睡吧，水会将你托住',
+      note: '睡莲开在水面，却从不害怕夜色落下来。你也可以先不撑着了。睡吧，水会将你托住。',
+      anchorSong: { title: 'The Rose', artist: 'Westlife' },
+      sideA: '下沉',
+      sideB: '托住',
+      suitableMood: '撑太久 / 身体很累 / 想安心睡去',
+      coverUrl: 'assets/cover_a_water_lily.webp'
+    },
+    {
+      recordNo: 'No.0009',
+      title: '把没说完的，放在夜里',
+      plant: '蓝铃花',
+      flowerWords: '低着头，也在轻轻奏响',
+      note: '蓝铃花总是低着头，好像不愿惊动谁。可风经过的时候，它也会很轻地响。没说完的话，今晚可以先放在这里。',
+      anchorSong: { title: '小半', artist: '陈粒' },
+      sideA: '低语',
+      sideB: '回声',
+      suitableMood: '心事很多 / 不想解释 / 需要被听见',
+      coverUrl: 'assets/cover_a_cluster_of_hanging_bluebells.webp'
+    },
+    {
+      recordNo: 'No.0010',
+      title: '走到这里，已经很好',
+      plant: '蒲公英',
+      flowerWords: '松开手，它就会飞翔',
+      note: '蒲公英不是被风带走的，它只是终于松开了自己。今天走到这里已经很好，剩下的路，明天再走也可以。',
+      anchorSong: { title: '平凡之路', artist: '朴树' },
+      sideA: '放手',
+      sideB: '远行',
+      suitableMood: '压力大 / 想逃离 / 需要一点释然',
+      coverUrl: 'assets/cover_a_dandelion_seed_head.webp'
+    },
+    {
+      recordNo: 'No.0011',
+      title: '今天到这里就好',
+      plant: '洋甘菊',
+      flowerWords: '把刺放下，也能睡着',
+      note: '洋甘菊没有很响亮的香气，只是在水里慢慢散开。今天到这里就好，你不用再把自己拧紧了。',
+      anchorSong: { title: '晚安', artist: '颜人中' },
+      sideA: '松开',
+      sideB: '安睡',
+      suitableMood: '紧绷 / 自责 / 想停止反刍',
+      coverUrl: 'assets/cover_evening_primrose.webp'
+    },
+    {
+      recordNo: 'No.0012',
+      title: '把坏心情泡软一点',
+      plant: '雪松',
+      flowerWords: '有人替你守着',
+      note: '雪松在冷天里也不急着低头。它只是站在那里，替很小的生命挡一会儿风。今晚也有人替你守着。',
+      anchorSong: { title: '给你一瓶魔法药水', artist: '告五人' },
+      sideA: '回暖',
+      sideB: '守夜',
+      suitableMood: '有点低落 / 需要陪伴 / 想被保护一下',
+      coverUrl: 'assets/cover_a_sprig_of_lavender.webp'
+    },
+    {
+      recordNo: 'No.0013',
+      title: '忽然之间，夜安静了',
+      plant: '白茉莉',
+      flowerWords: '轻轻的，也足够',
+      note: '白茉莉不需要很大的月亮。只要一点点夜风，它就能把香气交出去。你也不需要证明很多，轻轻的，也足够。',
+      anchorSong: { title: '忽然之间', artist: '莫文蔚' },
+      sideA: '安静',
+      sideB: '微光',
+      suitableMood: '突然难过 / 想哭 / 需要柔软安放',
+      coverUrl: 'assets/cover_a_water_lily.webp'
+    }
+  ];
+
+  var currentRecord = fallbackSongs[0];
+
   const state = {
     currentScreen: 'home',
     selectedElf: 'yedu',
@@ -419,19 +520,204 @@
     return minutes + ':' + secs;
   }
 
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function normalizeCoverUrl(url, fallback) {
+    return String(url || fallback || 'assets/cover_evening_primrose.webp').replace(/^http:\/\//, 'https://');
+  }
+
+  function getDeviceId() {
+    var key = 'sonic_grove_device_id';
+    try {
+      var existing = localStorage.getItem(key);
+      if (existing) return existing;
+      var value = 'sg-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem(key, value);
+      return value;
+    } catch (error) {
+      return 'sonic-grove-web';
+    }
+  }
+
+  function cleanText(value) {
+    return String(value || '').replace(/[《》“”"'·\s]/g, '').toLowerCase();
+  }
+
+  function findFallbackBySong(songTitle, artist) {
+    var wantedSong = cleanText(songTitle);
+    var wantedArtist = cleanText(artist);
+    return fallbackSongs.find(function (item) {
+      var sameSong = cleanText(item.anchorSong.title) === wantedSong;
+      var sameArtist = !wantedArtist || cleanText(item.anchorSong.artist) === wantedArtist;
+      return sameSong && sameArtist;
+    }) || null;
+  }
+
+  function chooseFallbackByMood() {
+    var moodText = [state.answers.mood, state.answers.energy, state.answers.goal].join(' ');
+    if (/绷|紧|反复|自责/.test(moodText) || state.answers.tension > 78) return fallbackSongs[5];
+    if (/累|生病|沉|被好好接住/.test(moodText)) return fallbackSongs[2];
+    if (/空|陪伴|低落/.test(moodText)) return fallbackSongs[6];
+    if (/乱|说不清|听见|心事/.test(moodText)) return fallbackSongs[3];
+    if (/逃|压力|什么都不想/.test(moodText)) return fallbackSongs[4];
+    if (/平静|困但很清醒|停不下来/.test(moodText)) return fallbackSongs[0];
+    return fallbackSongs[1];
+  }
+
+  function buildSearchQuery() {
+    var words = ['晚安'];
+    if (/停不下|反复|困但很清醒/.test(state.answers.mood + state.answers.energy)) {
+      words.push('安静', '夜晚');
+    }
+    if (/空|陪伴|被好好接住/.test(state.answers.mood + state.answers.goal)) {
+      words.push('陪伴', '温柔');
+    }
+    if (/累|生病|绷/.test(state.answers.energy)) {
+      words.push('放松', '慢歌');
+    }
+    if (state.answers.tension > 70) words.push('低刺激');
+    return words.slice(0, 4).join(' ');
+  }
+
+  function recordNoFromSong(song) {
+    var id = Number(song && song.songId) || Math.floor(Math.random() * 9000 + 1000);
+    return 'No.' + String(id % 10000).padStart(4, '0');
+  }
+
+  function makeRecordFromSong(song, copyBase) {
+    var base = copyBase || chooseFallbackByMood();
+    return {
+      recordNo: recordNoFromSong(song),
+      title: base.title,
+      plant: base.plant,
+      flowerWords: base.flowerWords,
+      note: base.note,
+      anchorSong: {
+        title: (song && (song.songTitle || song.songName)) || base.anchorSong.title,
+        artist: (song && song.artist) || base.anchorSong.artist
+      },
+      sideA: base.sideA,
+      sideB: base.sideB,
+      suitableMood: base.suitableMood,
+      matchReason: base.matchReason || '它的声音足够轻，适合把今晚慢慢放低。',
+      songId: song && song.songId,
+      songMid: song && song.songMid,
+      h5Url: song && song.h5Url,
+      previewUrl: song && song.previewUrl,
+      playUrl: song && song.playUrl,
+      coverUrl: normalizeCoverUrl(song && song.coverUrl, base.coverUrl)
+    };
+  }
+
+  function setCurrentRecord(record) {
+    currentRecord = record || fallbackSongs[0];
+    applyMockRecord();
+    return currentRecord;
+  }
+
+  function getCurrentRecord() {
+    return currentRecord || fallbackSongs[0] || mockRecord;
+  }
+
+  function pickBestSong(songs, desiredTitle, desiredArtist) {
+    var list = Array.isArray(songs) ? songs : [];
+    if (!list.length) return null;
+    var wantedSong = cleanText(desiredTitle);
+    var wantedArtist = cleanText(desiredArtist);
+    var playable = list.filter(function (song) {
+      return song && (song.playable || song.tryPlayable || song.previewUrl || song.playUrl);
+    });
+    var candidates = playable.length ? playable : list;
+    return candidates.find(function (song) {
+      var sameSong = !wantedSong || cleanText(song.songTitle || song.songName) === wantedSong;
+      var sameArtist = !wantedArtist || cleanText(song.artist).indexOf(wantedArtist) !== -1;
+      return sameSong && sameArtist;
+    }) || candidates[0];
+  }
+
+  function fetchQQMusicSearch(query) {
+    var params = new URLSearchParams({
+      keyword: query,
+      num: '10',
+      t: '0',
+      deviceId: getDeviceId()
+    });
+    return fetch('/api/qqmusic/search?' + params.toString(), { cache: 'no-store' })
+      .then(function (response) { return response.ok ? response.json() : null; })
+      .catch(function () { return null; });
+  }
+
+  function createRecordFromFallback(songTitle, artist) {
+    var exact = findFallbackBySong(songTitle, artist);
+    if (exact) return Object.assign({}, exact, { coverUrl: normalizeCoverUrl(exact.coverUrl) });
+    var base = chooseFallbackByMood();
+    return makeRecordFromSong({ songTitle: songTitle, songName: songTitle, artist: artist }, base);
+  }
+
+  function createAutoRecord() {
+    var fallback = chooseFallbackByMood();
+    var query = buildSearchQuery();
+    return fetchQQMusicSearch(query).then(function (data) {
+      if (!data || !data.ok || !data.songs || !data.songs.length) {
+        return setCurrentRecord(Object.assign({}, fallback, { coverUrl: normalizeCoverUrl(fallback.coverUrl) }));
+      }
+      var song = pickBestSong(data.songs);
+      return setCurrentRecord(makeRecordFromSong(song, fallback));
+    });
+  }
+
+  function createManualRecord(songTitle, artist) {
+    return fetchQQMusicSearch((songTitle + ' ' + artist).trim()).then(function (data) {
+      if (!data || !data.ok || !data.songs || !data.songs.length) {
+        return setCurrentRecord(createRecordFromFallback(songTitle, artist));
+      }
+      var song = pickBestSong(data.songs, songTitle, artist);
+      var exact = findFallbackBySong(songTitle, artist);
+      return setCurrentRecord(makeRecordFromSong(song, exact || chooseFallbackByMood()));
+    });
+  }
+
+  function updateRecordImages(record) {
+    var cover = normalizeCoverUrl(record && record.coverUrl);
+    var selectors = [
+      '#polaroid img',
+      '#screen-reveal .record-sleeve img',
+      '#screen-reveal .vinyl-label img',
+      '#screen-shelf .hero-jacket .record-sleeve img',
+      '#screen-shelf .hero-jacket .vinyl-label img'
+    ];
+    selectors.forEach(function (selector) {
+      Array.from(document.querySelectorAll(selector)).forEach(function (img) {
+        img.src = cover;
+      });
+    });
+    Array.from(document.querySelectorAll('#screen-playback image')).forEach(function (image) {
+      image.setAttribute('href', cover);
+    });
+  }
+
   function applyMockRecord() {
+    var record = getCurrentRecord();
     if (ui.tensionSlider) ui.tensionSlider.value = String(mockRecord.mood.tension);
     if (ui.tensionValue) ui.tensionValue.textContent = String(mockRecord.mood.tension);
-    ui.recordNo.textContent = mockRecord.recordNo;
-    ui.recordTitle.textContent = mockRecord.title;
-    ui.recordPlant.textContent = mockRecord.plant;
-    ui.recordAnchor.textContent = '锚定歌《' + mockRecord.anchorSong.title + '》 · ' + mockRecord.anchorSong.artist;
-    ui.recordSideA.textContent = 'A 面 · ' + mockRecord.sideA;
-    ui.recordSideB.textContent = 'B 面 · ' + mockRecord.sideB;
-    ui.recordWords.textContent = '“' + mockRecord.flowerWords + '”';
-    ui.recordNote.textContent = mockRecord.note;
-    ui.playbackSub.textContent = mockRecord.recordNo + ' · ' + mockRecord.title + ' · 《' + mockRecord.anchorSong.title + '》' + mockRecord.anchorSong.artist;
-    ui.shelfNote.textContent = mockRecord.recordNo + ' · ' + mockRecord.plant + ' · ' + mockRecord.title;
+    ui.recordNo.textContent = record.recordNo;
+    ui.recordTitle.textContent = record.title;
+    ui.recordPlant.textContent = record.plant;
+    ui.recordAnchor.textContent = '锚定歌《' + record.anchorSong.title + '》 · ' + record.anchorSong.artist;
+    ui.recordSideA.textContent = 'A 面 · ' + record.sideA;
+    ui.recordSideB.textContent = 'B 面 · ' + record.sideB;
+    ui.recordWords.textContent = '“' + record.flowerWords + '”';
+    ui.recordNote.textContent = record.note;
+    ui.playbackSub.textContent = record.recordNo + ' · ' + record.title + ' · 《' + record.anchorSong.title + '》' + record.anchorSong.artist;
+    ui.shelfNote.textContent = record.recordNo + ' · ' + record.plant + ' · ' + record.title;
+    updateRecordImages(record);
   }
 
   var chatStage;
@@ -552,9 +838,11 @@
   }
 
   function appendMatchAuto() {
-    var artist = mockRecord.anchorSong.artist;
-    var title = mockRecord.anchorSong.title;
-    var html = '<article class="glass-panel match-card"><p class="bubble-mark">LIGHT CARD</p><div class="match-tabs" role="tablist"><button type="button" class="match-tab active" id="match-tab-auto" role="tab" aria-selected="true">自动匹配</button><button type="button" class="match-tab" id="match-tab-manual" role="tab" aria-selected="false">自主输入</button></div><div class="match-auto"><div class="album-line"><div class="album-thumb"><img src="assets/cover_GUANG.jpg" alt="光"></div><div class="album-copy"><p class="album-top">今天最适合陪伴你入睡的是</p><p class="album-main">' + artist + ' · 《' + title + '》</p></div></div><p class="album-bottom">《' + title + '》已经替你开出 ' + mockRecord.recordNo + ' 张花语唱片。</p></div></article>';
+    var record = getCurrentRecord();
+    var artist = record.anchorSong.artist;
+    var title = record.anchorSong.title;
+    var cover = normalizeCoverUrl(record.coverUrl, 'assets/cover_GUANG.jpg');
+    var html = '<article class="glass-panel match-card"><p class="bubble-mark">LIGHT CARD</p><div class="match-tabs" role="tablist"><button type="button" class="match-tab active" id="match-tab-auto" role="tab" aria-selected="true">自动匹配</button><button type="button" class="match-tab" id="match-tab-manual" role="tab" aria-selected="false">自主输入</button></div><div class="match-auto"><div class="album-line"><div class="album-thumb"><img src="' + escapeHtml(cover) + '" alt="' + escapeHtml(title) + '"></div><div class="album-copy"><p class="album-top">今天最适合陪伴你入睡的是</p><p class="album-main">' + escapeHtml(artist) + ' · 《' + escapeHtml(title) + '》</p></div></div><p class="album-bottom">《' + escapeHtml(title) + '》已经替你开出 ' + escapeHtml(record.recordNo) + ' 张花语唱片。</p></div></article>';
     var el = appendToChat(html, 'match-wrap');
     bindMatchTabs();
     return el;
@@ -600,11 +888,14 @@
     refreshChatState();
     setTimeout(function () {
       if (state.chatFlow.matchPhase !== 'thinking') return;
-      state.chatFlow.matchPhase = 'revealed';
-      state.chatFlow.matchMode = 'auto';
-      lastMatchEl = appendMatchAuto();
-      chatStep = 7;
-      refreshChatState();
+      createAutoRecord().then(function () {
+        if (state.chatFlow.matchPhase !== 'thinking') return;
+        state.chatFlow.matchPhase = 'revealed';
+        state.chatFlow.matchMode = 'auto';
+        lastMatchEl = appendMatchAuto();
+        chatStep = 7;
+        refreshChatState();
+      });
     }, 800);
   }
 
@@ -642,11 +933,13 @@
       var card = document.getElementById('manual-card');
       var songEl = document.getElementById('manual-card-song');
       var artistEl = document.getElementById('manual-card-artist');
-      if (songEl) songEl.textContent = album ? '《' + song + '》 · ' + album : '《' + song + '》';
-      if (artistEl) artistEl.textContent = artist;
-      if (card) card.classList.remove('hidden');
-      state.chatFlow.manualConfirmed = true;
-      refreshChatState();
+      createManualRecord(song, artist).then(function (record) {
+        if (songEl) songEl.textContent = album ? '《' + record.anchorSong.title + '》 · ' + album : '《' + record.anchorSong.title + '》';
+        if (artistEl) artistEl.textContent = record.anchorSong.artist;
+        if (card) card.classList.remove('hidden');
+        state.chatFlow.manualConfirmed = true;
+        refreshChatState();
+      });
     });
   }
 
@@ -682,6 +975,8 @@
   }
 
   function resetChatFlow() {
+    currentRecord = fallbackSongs[0];
+    applyMockRecord();
     state.answers.mood = '';
     state.answers.energy = '';
     state.answers.goal = '';
@@ -904,7 +1199,7 @@
     state.holdRaf = 0;
     setEngraveProgress(1);
     ui.engraveCore.classList.remove('holding');
-    ui.engraveTip.textContent = '刻录完成。月见草已经发亮。';
+    ui.engraveTip.textContent = '刻录完成。' + getCurrentRecord().plant + '已经发亮。';
     Sound.synth('reveal');
     document.getElementById('polaroid').classList.add('bloomed');
     window.setTimeout(function () {
@@ -919,7 +1214,7 @@
     setEngraveProgress(progress);
     ui.engraveTip.textContent = progress < 1
       ? '刻录中 ' + Math.round(progress * 100) + '%'
-      : '刻录完成。月见草已经发亮。';
+      : '刻录完成。' + getCurrentRecord().plant + '已经发亮。';
 
     if (progress >= 1) {
       finishEngrave();
@@ -1347,7 +1642,8 @@
     var heroBtn = document.getElementById('hero-disc');
     if (heroBtn) {
       heroBtn.addEventListener('click', function () {
-        open('No.0006', '月见草', '没人看，也会开。', 'assets/cover_evening_primrose.webp', '光——陈粒');
+        var record = getCurrentRecord();
+        open(record.recordNo, record.plant, record.flowerWords, normalizeCoverUrl(record.coverUrl), record.anchorSong.title + '——' + record.anchorSong.artist);
       });
     }
 
@@ -1417,6 +1713,8 @@
     state: state,
     Sound: Sound,
     mockRecord: mockRecord,
+    fallbackSongs: fallbackSongs,
+    getCurrentRecord: getCurrentRecord,
     startPlayback: startPlayback,
     stopPlayback: stopPlayback,
     fadeOut: fadeOut,

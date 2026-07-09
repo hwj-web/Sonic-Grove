@@ -1,0 +1,7 @@
+QQMUSIC_APP_ID=
+QQMUSIC_APP_KEY=
+
+# Optional login fields for APIs that require a QQ Music user login state.
+QQMUSIC_OPEN_APPID=
+QQMUSIC_OPEN_ID=
+QQMUSIC_ACCESS_TOKEN=
