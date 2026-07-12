@@ -1942,6 +1942,15 @@ input[type="range"]::-webkit-slider-thumb{
 .bloom-card:not(.hidden){
   opacity:1;transform:translate(-50%,-50%) translateY(0);pointer-events:auto;
 }
+.bloom-panel{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  animation:bloomPanelIn .46s var(--ease) both;
+}
+.bloom-panel.hidden{display:none;}
 .bloom-close{
   position:absolute;top:10px;right:14px;
   font-size:18px;color:rgba(251,246,233,.44);
@@ -2012,8 +2021,60 @@ input[type="range"]::-webkit-slider-thumb{
 .bloom-play.loading{
   width:auto;border-radius:999px;padding:0 10px;font-size:10px;
 }
+.bloom-flip{
+  margin-top:-2px;
+  padding:7px 14px;
+  border-radius:999px;
+  border:1px solid rgba(241,185,104,.24);
+  background:rgba(251,246,233,.04);
+  color:rgba(251,246,233,.68);
+  font-family:var(--serif);
+  font-size:11px;
+  letter-spacing:2.4px;
+  cursor:pointer;
+  transition:border-color .3s var(--ease),color .3s var(--ease),background .3s var(--ease),transform .2s var(--ease);
+}
+.bloom-flip:hover{
+  border-color:rgba(241,185,104,.5);
+  color:rgba(241,185,104,.86);
+  background:rgba(241,185,104,.07);
+}
+.bloom-flip:active{transform:scale(.97);}
+.bloom-diary{
+  text-align:center;
+  padding:4px 0 2px;
+}
+.bloom-diary-date{
+  font-size:10.5px;
+  letter-spacing:4px;
+  color:rgba(251,246,233,.48);
+}
+.bloom-diary-section{
+  width:100%;
+  max-width:238px;
+  padding-top:2px;
+}
+.bloom-diary-section .bubble-mark{
+  margin-bottom:6px;
+  color:rgba(241,185,104,.62);
+}
+.bloom-diary-line,.bloom-diary-note{
+  font-size:12px;
+  letter-spacing:1.2px;
+  line-height:1.9;
+  color:rgba(244,236,219,.7);
+}
 
 .hero-no{font-size:11px;letter-spacing:3px;color:rgba(251,246,233,.74);}
+.planted-message{
+  margin-top:-8px;
+  font-family:var(--serif);
+  font-size:13px;
+  letter-spacing:2.2px;
+  color:rgba(241,185,104,.76);
+  text-align:center;
+  text-shadow:0 0 18px rgba(241,185,104,.16);
+}
 .shelf-aside{font-size:11px;letter-spacing:2px;color:rgba(244,236,219,.5);margin-top:2px;}
 
 /* ---------- 最后页入场动效（纯 CSS，挂在 .active 上，无需改 JS） ---------- */
@@ -2033,6 +2094,7 @@ input[type="range"]::-webkit-slider-thumb{
 @keyframes heroIn{from{opacity:0;transform:translateY(16px) rotate(-5deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
 @keyframes plantGlow{from{opacity:0;transform:translateX(-50%) scale(.7)}to{opacity:1;transform:translateX(-50%) scale(1)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bloomPanelIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes sleeveBreath{0%,100%{box-shadow:var(--shadow),0 0 28px rgba(241,185,104,.12)}50%{box-shadow:var(--shadow),0 0 40px rgba(241,185,104,.26)}}
 
 /* =========================================================
@@ -2063,6 +2125,23 @@ input[type="range"]::-webkit-slider-thumb{
 .series-disc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 44%,rgba(8,12,14,.55));}
 .series-disc span{position:absolute;left:0;right:0;bottom:5px;text-align:center;font-size:8.5px;letter-spacing:1.2px;
   color:rgba(251,246,233,.86);z-index:2;text-shadow:0 1px 3px rgba(0,0,0,.5);}
+.series-disc.current-record-disc.just-planted{
+  animation:recordGrowIn 1.35s var(--ease) both;
+}
+.series-disc.current-record-disc.just-planted::before{
+  content:"";
+  position:absolute;
+  inset:-14px -12px -10px;
+  z-index:1;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 70%, rgba(136,169,130,.42), transparent 42%),
+    radial-gradient(circle at 28% 36%, rgba(241,185,104,.24), transparent 34%),
+    radial-gradient(circle at 72% 34%, rgba(241,185,104,.18), transparent 36%);
+  filter:blur(8px);
+  opacity:0;
+  animation:recordBloomGlow 1.35s var(--ease) both;
+}
 /* 实木隔板 */
 .rack-wood{position:relative;height:18px;margin-top:-4px;border-radius:4px;z-index:1;
   background:linear-gradient(180deg,#6e4a2f 0%,#5a3a23 42%,#48301c 100%);
@@ -2094,6 +2173,16 @@ input[type="range"]::-webkit-slider-thumb{
 
 /* 闭环按钮的入场延迟（shelf-copy 第 5 个子元素） */
 #screen-shelf.active .shelf-copy>*:nth-child(5){animation:fadeUp 600ms var(--ease) both;animation-delay:1.6s;}
+@keyframes recordGrowIn{
+  0%{opacity:.58;transform:translateY(8px) scale(.94);filter:blur(1.8px)}
+  68%{opacity:1;transform:translateY(-4px) scale(1.015);filter:blur(0)}
+  100%{opacity:.94;transform:translateY(0) scale(1);filter:blur(0)}
+}
+@keyframes recordBloomGlow{
+  0%{opacity:0;transform:scale(.72)}
+  54%{opacity:.9;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.08)}
+}
 
 /* 自主输入 ··· 占位样式（真实输入由 Trae 接） */
 .choice-chip-input{border-style:dashed !important;color:rgba(251,246,233,.66) !important;letter-spacing:2px;}
@@ -2182,4 +2271,6 @@ input[type="range"]::-webkit-slider-thumb{
 
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;}
+  .series-disc.current-record-disc.just-planted{transform:none;filter:none;}
+  .series-disc.current-record-disc.just-planted::before{display:none;}
 }

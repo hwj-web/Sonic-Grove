@@ -317,7 +317,10 @@
     bgmMuted: false,
     playbackEnding: false,
     playbackPhase: 'idle',
-    yeduWhisperTimeout: 0
+    yeduWhisperTimeout: 0,
+    pendingDiaryEntry: null,
+    playbackCompleted: false,
+    justPlantedRecordKey: ''
   };
 
   let W = 0;
@@ -753,6 +756,52 @@
       .replace(/'/g, '&#39;');
   }
 
+  function cleanDiaryLine(value) {
+    return String(value || '').replace(/\s+/g, ' ').trim().slice(0, 120);
+  }
+
+  function normalizeDiaryEntry(entry) {
+    if (!entry || typeof entry !== 'object') return null;
+    var userLine = cleanDiaryLine(entry.userLine);
+    var source = userLine ? 'user' : 'generated';
+    var normalized = {
+      userLine: userLine,
+      mood: String(entry.mood || ''),
+      energy: String(entry.energy || ''),
+      goal: String(entry.goal || ''),
+      source: source
+    };
+    if (!normalized.userLine && !normalized.mood && !normalized.energy && !normalized.goal) return null;
+    return normalized;
+  }
+
+  function createDiaryEntrySnapshot(userLine) {
+    var line = cleanDiaryLine(userLine);
+    return {
+      userLine: line,
+      mood: state.answers.mood || '',
+      energy: state.answers.energy || '',
+      goal: state.answers.goal || '',
+      source: line ? 'user' : 'generated'
+    };
+  }
+
+  function savePendingDiaryEntry(userLine) {
+    state.pendingDiaryEntry = createDiaryEntrySnapshot(userLine);
+    return state.pendingDiaryEntry;
+  }
+
+  function formatRecordDate(value) {
+    if (!value) return '';
+    var date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    return [
+      date.getFullYear(),
+      String(date.getMonth() + 1).padStart(2, '0'),
+      String(date.getDate()).padStart(2, '0')
+    ].join('.');
+  }
+
   function normalizeCoverUrl(url, fallback) {
     return String(url || fallback || 'assets/cover_evening_primrose.webp').replace(/^http:\/\//, 'https://');
   }
@@ -799,6 +848,9 @@
       h5Url: source.h5Url || base.h5Url || '',
       previewUrl: source.previewUrl || base.previewUrl || '',
       playUrl: source.playUrl || base.playUrl || '',
+      createdAt: source.createdAt || base.createdAt || '',
+      plantedAt: source.plantedAt || base.plantedAt || '',
+      diaryEntry: normalizeDiaryEntry(source.diaryEntry || base.diaryEntry),
       soundRecipe: Object.assign({}, defaultSoundRecipe, base.soundRecipe || {}, source.soundRecipe || {})
     };
     snapshot.coverUrl = resolveRecordCover(Object.assign({}, snapshot, {
@@ -834,14 +886,39 @@
 
   function archiveCurrentRecord() {
     var snapshot = normalizeRecordSnapshot(getCurrentRecord(), fallbackSongs[0]);
-    snapshot.createdAt = snapshot.createdAt || new Date().toISOString();
     var key = getRecordArchiveKey(snapshot);
-    var records = getShelfRecords().filter(function (item) {
+    var records = getShelfRecords();
+    var existing = records.find(function (item) {
+      return getRecordArchiveKey(item) === key;
+    });
+    var now = new Date().toISOString();
+    if (existing) {
+      snapshot.createdAt = existing.createdAt || snapshot.createdAt || now;
+      snapshot.plantedAt = existing.plantedAt || snapshot.plantedAt || snapshot.createdAt;
+      snapshot.diaryEntry = snapshot.diaryEntry || normalizeDiaryEntry(existing.diaryEntry);
+    } else {
+      snapshot.createdAt = snapshot.createdAt || now;
+      snapshot.plantedAt = snapshot.plantedAt || snapshot.createdAt;
+    }
+    records = records.filter(function (item) {
       return getRecordArchiveKey(item) !== key;
     });
     records.unshift(snapshot);
     saveShelfRecords(records);
     lastShelfArchiveKey = key;
+    currentRecord = snapshot;
+    return snapshot;
+  }
+
+  function finalizePlanting(options) {
+    var reason = options && options.reason ? String(options.reason) : '';
+    if (!state.playbackCompleted && reason !== 'debug-force') return null;
+    var diaryEntry = normalizeDiaryEntry(state.pendingDiaryEntry) || createDiaryEntrySnapshot('');
+    currentRecord = normalizeRecordSnapshot(Object.assign({}, getCurrentRecord(), {
+      diaryEntry: diaryEntry
+    }), fallbackSongs[0]);
+    var snapshot = archiveCurrentRecord();
+    state.justPlantedRecordKey = getRecordArchiveKey(snapshot);
     return snapshot;
   }
 
@@ -858,11 +935,30 @@
       rack.insertBefore(btn, rack.firstElementChild);
     }
     var cover = resolveRecordCover(latest);
+    var key = getRecordArchiveKey(latest);
+    var heroNo = document.getElementById('hero-no');
+    var plantedMessage = document.getElementById('planted-message');
     btn.dataset.no = latest.recordNo;
     btn.dataset.plant = latest.plant;
     btn.dataset.words = latest.flowerWords;
+    btn.dataset.source = latest.source || '';
     btn.dataset.bgm = latest.anchorSong.title + '——' + latest.anchorSong.artist;
     btn.innerHTML = '<img src="' + escapeHtml(cover) + '" alt="" onerror="this.classList.add(\'img-fail\')"><span>' + escapeHtml(latest.recordNo) + '</span>';
+    btn.classList.remove('just-planted');
+    if (heroNo) heroNo.textContent = '今晚新种下 · ' + latest.recordNo;
+    if (plantedMessage) plantedMessage.textContent = '今晚的' + latest.plant + '，已经种下。';
+    if (state.justPlantedRecordKey && state.justPlantedRecordKey === key) {
+      requestAnimationFrame(function () {
+        btn.classList.add('just-planted');
+      });
+      var clearJustPlanted = function () {
+        btn.classList.remove('just-planted');
+        if (state.justPlantedRecordKey === key) state.justPlantedRecordKey = '';
+        btn.removeEventListener('animationend', clearJustPlanted);
+      };
+      btn.addEventListener('animationend', clearJustPlanted);
+      window.setTimeout(clearJustPlanted, 1800);
+    }
     btn.onclick = function () {
       if (openBloomCard) {
         openBloomCard(latest);
@@ -1487,11 +1583,16 @@
     state.chatFlow.matchPhase = 'idle';
     state.chatFlow.matchMode = 'auto';
     state.chatFlow.manualConfirmed = false;
+    state.chatFlow.diaryResponded = false;
     state.chatFlow.finalHintShown = false;
+    state.pendingDiaryEntry = null;
+    state.playbackCompleted = false;
+    state.justPlantedRecordKey = '';
     chatStep = 0;
 
     var stage = document.getElementById('chat-stage');
     if (stage) stage.innerHTML = '';
+    if (ui.diaryTextarea) ui.diaryTextarea.value = '';
     ui.chatTip.classList.add('hidden');
     ui.chatNext.classList.add('hidden');
     ui.chatNext.disabled = true;
@@ -1644,6 +1745,8 @@
       var hint = document.getElementById('eyes-closed-hint');
       if (hint) hint.classList.add('hidden');
       if (breathEl) { breathEl.classList.remove('show'); breathEl.classList.add('hidden'); }
+      state.playbackCompleted = true;
+      finalizePlanting({ reason: 'playback-ended' });
       goTo('shelf');
       state.playbackEnding = false;
       state.playbackStartedAt = 0;
@@ -1680,6 +1783,7 @@
     Sound.playAmbient();
     state.playbackStartedAt = performance.now();
     state.playbackEnding = false;
+    state.playbackCompleted = false;
     renderPlaybackFrame(0);
     state.playbackRaf = requestAnimationFrame(updatePlaybackLoop);
     state.playbackTimeout = window.setTimeout(function () {
@@ -1896,7 +2000,6 @@
       applyMockRecord();
     }
     if (id === 'shelf') {
-      archiveCurrentRecord();
       applyMockRecord();
     }
   }
@@ -1980,6 +2083,7 @@
     }
 
     function closeDiary() {
+      if (!state.pendingDiaryEntry) savePendingDiaryEntry('');
       ui.diaryOverlay.classList.add('hidden');
       ui.diaryPanel.classList.remove('recording');
       if (state.chatFlow.matchPhase === 'idle') {
@@ -1989,6 +2093,7 @@
 
     if (ui.diaryClose) ui.diaryClose.addEventListener('click', closeDiary);
     if (ui.diarySkip) ui.diarySkip.addEventListener('click', function () {
+      savePendingDiaryEntry('');
       if (!state.chatFlow.diaryResponded) {
         state.chatFlow.diaryResponded = true;
         appendYedu('不写也行。有些话，留着比说出来更轻。');
@@ -2026,6 +2131,7 @@
       ui.diarySave.addEventListener('click', function () {
         Sound.synth('click');
         ui.diaryHint.textContent = '已记录今晚的小日记。';
+        savePendingDiaryEntry(ui.diaryTextarea ? ui.diaryTextarea.value : '');
         window.setTimeout(function () {
           if (!state.chatFlow.diaryResponded) {
             state.chatFlow.diaryResponded = true;
@@ -2142,8 +2248,20 @@
     var sidesEl = document.getElementById('bloom-sides');
     var noteEl = document.getElementById('bloom-note');
     var bgmEl = document.getElementById('bloom-bgm');
+    var bgmRow = document.getElementById('bloom-bgm-row');
     var playBtn = document.getElementById('bloom-play-btn');
+    var frontPanel = document.getElementById('bloom-front');
+    var diaryPanel = document.getElementById('bloom-diary');
+    var flipBtn = document.getElementById('bloom-flip-btn');
+    var diaryDateEl = document.getElementById('bloom-diary-date');
+    var diaryTitleEl = document.getElementById('bloom-diary-title');
+    var diaryLineSection = document.getElementById('bloom-diary-line-section');
+    var diaryLineLabel = document.getElementById('bloom-diary-line-label');
+    var diaryLineEl = document.getElementById('bloom-diary-line');
+    var diaryNoteSection = document.getElementById('bloom-diary-note-section');
+    var diaryNoteEl = document.getElementById('bloom-diary-note');
     var activeBloomRecord = null;
+    var activeBloomView = 'front';
     var seedPreviewAudio = null;
     var seedPreviewLoading = false;
     var seedPreviewToken = 0;
@@ -2200,11 +2318,42 @@
       return Boolean(record && record.isSeed && record.audioKey && SeedAudioFiles[record.audioKey]);
     }
 
+    function renderBloomDiary(record) {
+      if (!record) return;
+      var entry = normalizeDiaryEntry(record.diaryEntry);
+      var userLine = entry && entry.userLine ? entry.userLine : '';
+      var line = userLine || record.matchReason || '';
+      if (diaryDateEl) diaryDateEl.textContent = formatRecordDate(record.plantedAt || record.createdAt);
+      if (diaryTitleEl) diaryTitleEl.textContent = record.title || '';
+      if (diaryLineLabel) diaryLineLabel.textContent = userLine ? '你留下的话' : '这一夜的心绪';
+      if (diaryLineEl) diaryLineEl.textContent = line;
+      if (diaryLineSection) diaryLineSection.classList.toggle('hidden', !line);
+      if (diaryNoteEl) diaryNoteEl.textContent = record.note || '';
+      if (diaryNoteSection) diaryNoteSection.classList.toggle('hidden', !record.note);
+    }
+
+    function setBloomView(view) {
+      activeBloomView = view === 'diary' ? 'diary' : 'front';
+      var isDiary = activeBloomView === 'diary';
+      if (frontPanel) {
+        frontPanel.classList.toggle('hidden', isDiary);
+        frontPanel.setAttribute('aria-hidden', isDiary ? 'true' : 'false');
+      }
+      if (diaryPanel) {
+        diaryPanel.classList.toggle('hidden', !isDiary);
+        diaryPanel.setAttribute('aria-hidden', isDiary ? 'false' : 'true');
+      }
+      if (flipBtn) flipBtn.textContent = isDiary ? '回到花语' : '翻到这一天';
+    }
+
     function openRecord(record) {
       if (!record) return;
       stopSeedPreview(true);
       activeBloomRecord = record;
+      activeBloomView = 'front';
       var anchor = record.anchorSong || {};
+      var hasSeedPreview = canPlaySeedPreview(record);
+      var canFlipDiary = record.isSeed !== true;
       if (noEl) noEl.textContent = record.recordNo || '';
       if (titleEl) titleEl.textContent = record.title || '';
       if (plantEl) plantEl.textContent = record.plant || '';
@@ -2220,6 +2369,10 @@
         playBtn.disabled = !canPlaySeedPreview(record);
         playBtn.setAttribute('aria-label', canPlaySeedPreview(record) ? '播放花语试听' : '暂无独立试听');
       }
+      renderBloomDiary(record);
+      setBloomView('front');
+      if (flipBtn) flipBtn.classList.toggle('hidden', !canFlipDiary);
+      if (bgmRow) bgmRow.classList.toggle('hidden', !hasSeedPreview);
       overlay.classList.remove('hidden');
       card.classList.remove('hidden');
       overlay.removeAttribute('aria-hidden');
@@ -2234,11 +2387,20 @@
       overlay.setAttribute('aria-hidden', 'true');
       card.setAttribute('aria-hidden', 'true');
       activeBloomRecord = null;
+      activeBloomView = 'front';
+      setBloomView('front');
       stopSeedPreview(true);
     }
 
     if (closeBtn) closeBtn.addEventListener('click', close);
     overlay.addEventListener('click', close);
+
+    if (flipBtn) {
+      flipBtn.addEventListener('click', function () {
+        if (!activeBloomRecord || activeBloomRecord.isSeed) return;
+        setBloomView(activeBloomView === 'front' ? 'diary' : 'front');
+      });
+    }
 
     if (playBtn) {
       playBtn.addEventListener('click', function (e) {
@@ -2466,9 +2628,25 @@
 
   function forceGuangPreset() {
     var record = setCurrentRecord(presetRecordBase(DemoPresets.yeduGuang));
-    archiveCurrentRecord();
+    state.playbackCompleted = true;
+    state.pendingDiaryEntry = state.pendingDiaryEntry || createDiaryEntrySnapshot('');
+    record = finalizePlanting({ reason: 'debug-force' }) || record;
     renderShelfRecords();
     return record;
+  }
+
+  function getLatestPlantedRecord() {
+    var records = getShelfRecords();
+    return records.length ? records[0] : null;
+  }
+
+  function getPlantingState() {
+    return {
+      playbackCompleted: state.playbackCompleted,
+      justPlantedRecordKey: state.justPlantedRecordKey,
+      lastShelfArchiveKey: lastShelfArchiveKey,
+      latest: getLatestPlantedRecord()
+    };
   }
 
   document.addEventListener('DOMContentLoaded', init);
@@ -2482,6 +2660,9 @@
     forceGuangPreset: forceGuangPreset,
     resolveRecordCover: resolveRecordCover,
     getShelfRecords: getShelfRecords,
+    getPendingDiaryEntry: function () { return state.pendingDiaryEntry; },
+    getLatestPlantedRecord: getLatestPlantedRecord,
+    getPlantingState: getPlantingState,
     previewAllMatchReasons: previewAllMatchReasons,
     getSeedRecords: function () { return SeedRecords.slice(); },
     getSeedAudioFiles: function () { return Object.assign({}, SeedAudioFiles); }

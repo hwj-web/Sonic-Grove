@@ -167,7 +167,7 @@
           </div>
 
           <div class="diary-text">
-            <textarea id="diary-textarea" rows="3" placeholder="写下今天的小日记…"></textarea>
+            <textarea id="diary-textarea" rows="3" maxlength="120" placeholder="写下今天的小日记…"></textarea>
             <button type="button" class="glass-btn diary-save" id="diary-save">记下</button>
           </div>
 
@@ -431,7 +431,8 @@
               <div class="record-sleeve"><img src="assets/cover_evening_primrose.webp" alt="月见草 No.0006"></div>
             </div>
           </button>
-          <p class="hero-no">今晚新种下 · No.0006</p>
+          <p class="hero-no" id="hero-no">今晚新种下 · No.0006</p>
+          <p class="planted-message" id="planted-message">今晚的月见草，已经种下。</p>
         </div>
 
         <div class="shelf-rack">
@@ -466,15 +467,30 @@
       <div class="bloom-overlay hidden" id="bloom-overlay" aria-hidden="true"></div>
       <div class="bloom-card hidden" id="bloom-card" role="dialog" aria-label="唱片花语" aria-modal="true">
         <button type="button" class="bloom-close" id="bloom-close" aria-label="关闭">&times;</button>
-        <div class="bloom-cover" id="bloom-cover-img"></div>
-        <p class="bloom-no" id="bloom-no"></p>
-        <p class="bloom-title" id="bloom-title"></p>
-        <p class="bloom-plant" id="bloom-plant"></p>
-        <p class="bloom-words" id="bloom-words"></p>
-        <p class="bloom-anchor" id="bloom-anchor"></p>
-        <p class="bloom-sides" id="bloom-sides"></p>
-        <p class="bloom-note" id="bloom-note"></p>
-        <div class="bloom-bgm-row">
+        <div class="bloom-panel bloom-front" id="bloom-front">
+          <div class="bloom-cover" id="bloom-cover-img"></div>
+          <p class="bloom-no" id="bloom-no"></p>
+          <p class="bloom-title" id="bloom-title"></p>
+          <p class="bloom-plant" id="bloom-plant"></p>
+          <p class="bloom-words" id="bloom-words"></p>
+          <p class="bloom-anchor" id="bloom-anchor"></p>
+          <p class="bloom-sides" id="bloom-sides"></p>
+          <p class="bloom-note" id="bloom-note"></p>
+        </div>
+        <div class="bloom-panel bloom-diary hidden" id="bloom-diary" aria-hidden="true">
+          <p class="bloom-diary-date" id="bloom-diary-date"></p>
+          <p class="bloom-title" id="bloom-diary-title"></p>
+          <div class="bloom-diary-section" id="bloom-diary-line-section">
+            <p class="bubble-mark" id="bloom-diary-line-label">你留下的话</p>
+            <p class="bloom-diary-line" id="bloom-diary-line"></p>
+          </div>
+          <div class="bloom-diary-section" id="bloom-diary-note-section">
+            <p class="bubble-mark">夜渡侧记</p>
+            <p class="bloom-diary-note" id="bloom-diary-note"></p>
+          </div>
+        </div>
+        <button type="button" class="bloom-flip hidden" id="bloom-flip-btn">翻到这一天</button>
+        <div class="bloom-bgm-row" id="bloom-bgm-row">
           <p class="bloom-bgm" id="bloom-bgm"></p>
           <button type="button" class="bloom-play" id="bloom-play-btn" aria-label="播放试听">▶</button>
         </div>
