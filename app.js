@@ -287,10 +287,23 @@
 
   var currentRecord = fallbackSongs[0];
   var lastSearchResult = null;
+  var lastSearchPlan = null;
+  var lastScoredSongs = [];
   var lastShelfArchiveKey = '';
   var openBloomCard = null;
   var stopBloomPreview = function () {};
   var syncBloomPreviewVolume = function () {};
+  var postcardState = {
+    record: null,
+    includeUserLine: false,
+    blob: null,
+    objectUrl: '',
+    file: null,
+    triggerElement: null,
+    status: 'idle',
+    generationId: 0
+  };
+  var postcardUi = null;
   const SHELF_RECORDS_KEY = 'sonic_grove_shelf_records';
 
   const state = {
@@ -817,6 +830,516 @@
     );
   }
 
+  function canGeneratePostcard(record) {
+    return Boolean(record && record.isSeed !== true);
+  }
+
+  function canIncludeUserLine(record) {
+    if (!canGeneratePostcard(record)) return false;
+    var entry = record && record.diaryEntry;
+    return Boolean(entry && entry.source === 'user' && cleanDiaryLine(entry.userLine));
+  }
+
+  function resolvePostcardPlantCover(record) {
+    var plant = record && record.plant ? record.plant : '';
+    return FlowerLibrary[plant] || 'assets/cover_evening_primrose.webp';
+  }
+
+  function createPostcardRecordSnapshot(record) {
+    var snapshot = normalizeRecordSnapshot(record, fallbackSongs[0]);
+    if (snapshot.diaryEntry && record && record.diaryEntry && typeof record.diaryEntry === 'object') {
+      snapshot.diaryEntry.source = record.diaryEntry.source === 'user' ? 'user' : String(record.diaryEntry.source || '');
+    }
+    return snapshot;
+  }
+
+  function revokePostcardObjectUrl() {
+    if (postcardState.objectUrl && window.URL && URL.revokeObjectURL) {
+      try { URL.revokeObjectURL(postcardState.objectUrl); } catch (error) {}
+    }
+    postcardState.objectUrl = '';
+  }
+
+  function resetPostcardState() {
+    revokePostcardObjectUrl();
+    postcardState.record = null;
+    postcardState.includeUserLine = false;
+    postcardState.blob = null;
+    postcardState.file = null;
+    postcardState.triggerElement = null;
+    postcardState.status = 'idle';
+    postcardState.generationId += 1;
+  }
+
+  function getPostcardUi() {
+    if (postcardUi) return postcardUi;
+    postcardUi = {
+      overlay: document.getElementById('postcard-overlay'),
+      card: document.getElementById('postcard-card'),
+      close: document.getElementById('postcard-close'),
+      preview: document.getElementById('postcard-preview'),
+      loading: document.getElementById('postcard-loading'),
+      userLineRow: document.getElementById('postcard-userline-row'),
+      userLineToggle: document.getElementById('postcard-userline-toggle'),
+      status: document.getElementById('postcard-status'),
+      download: document.getElementById('postcard-download'),
+      share: document.getElementById('postcard-share'),
+      bound: false
+    };
+    return postcardUi;
+  }
+
+  function getLocalDateStamp() {
+    var now = new Date();
+    return [
+      now.getFullYear(),
+      String(now.getMonth() + 1).padStart(2, '0'),
+      String(now.getDate()).padStart(2, '0')
+    ].join('-');
+  }
+
+  function getPostcardDateStamp(record) {
+    var value = record && (record.plantedAt || record.createdAt);
+    var date = value ? new Date(value) : new Date();
+    if (Number.isNaN(date.getTime())) date = new Date();
+    return [
+      date.getFullYear(),
+      String(date.getMonth() + 1).padStart(2, '0'),
+      String(date.getDate()).padStart(2, '0')
+    ].join('-');
+  }
+
+  function sanitizeFilePart(value) {
+    return String(value || 'record')
+      .replace(/[\\/:*?"<>|]+/g, '')
+      .replace(/\s+/g, '-')
+      .slice(0, 32) || 'record';
+  }
+
+  function getPostcardFileName(record) {
+    return 'sonic-grove-' + sanitizeFilePart(record && record.plant) + '-' + getPostcardDateStamp(record) + '.png';
+  }
+
+  function loadSinglePostcardImage(src) {
+    return new Promise(function (resolve) {
+      if (!src) {
+        resolve(null);
+        return;
+      }
+      var settled = false;
+      function finish(image) {
+        if (settled) return;
+        settled = true;
+        if (timeoutId) window.clearTimeout(timeoutId);
+        resolve(image || null);
+      }
+      var img = new Image();
+      var timeoutId = window.setTimeout(function () { finish(null); }, 4000);
+      img.onload = function () { finish(img); };
+      img.onerror = function () { finish(null); };
+      img.src = src;
+      if (img.decode) {
+        img.decode().then(function () { finish(img); }).catch(function () {});
+      }
+    });
+  }
+
+  async function loadPostcardImage(record) {
+    var primary = resolvePostcardPlantCover(record);
+    var fallback = 'assets/cover_evening_primrose.webp';
+    var image = await loadSinglePostcardImage(primary);
+    if (image || primary === fallback) return image;
+    return await loadSinglePostcardImage(fallback);
+  }
+
+  function createPostcardGenerationError(stage, error) {
+    var source = error instanceof Error ? error : new Error(String(error || 'Unknown postcard error'));
+    source.postcardStage = stage;
+    return source;
+  }
+
+  function setCanvasOptionalProperty(canvasCtx, property, value) {
+    try {
+      if (property in canvasCtx) {
+        canvasCtx[property] = value;
+      }
+    } catch (error) {}
+  }
+
+  function roundedRectPath(canvasCtx, x, y, width, height, radius) {
+    var r = Math.min(radius, width / 2, height / 2);
+    canvasCtx.beginPath();
+    canvasCtx.moveTo(x + r, y);
+    canvasCtx.lineTo(x + width - r, y);
+    canvasCtx.quadraticCurveTo(x + width, y, x + width, y + r);
+    canvasCtx.lineTo(x + width, y + height - r);
+    canvasCtx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+    canvasCtx.lineTo(x + r, y + height);
+    canvasCtx.quadraticCurveTo(x, y + height, x, y + height - r);
+    canvasCtx.lineTo(x, y + r);
+    canvasCtx.quadraticCurveTo(x, y, x + r, y);
+    canvasCtx.closePath();
+  }
+
+  function wrapCanvasText(canvasCtx, text, maxWidth, maxLines) {
+    var clean = String(text || '').replace(/\s+/g, ' ').trim();
+    if (!clean) return [];
+    var chars = Array.from(clean);
+    var lines = [];
+    var line = '';
+    for (var i = 0; i < chars.length; i += 1) {
+      var test = line + chars[i];
+      if (canvasCtx.measureText(test).width <= maxWidth || !line) {
+        line = test;
+        continue;
+      }
+      lines.push(line);
+      line = chars[i];
+      if (lines.length === maxLines) break;
+    }
+    if (line && lines.length < maxLines) lines.push(line);
+    if (lines.length > maxLines) lines = lines.slice(0, maxLines);
+    if (lines.length === maxLines) {
+      var used = lines.join('');
+      if (used.length < clean.length) {
+        var last = lines[maxLines - 1];
+        while (last && canvasCtx.measureText(last + '...').width > maxWidth) {
+          last = last.slice(0, -1);
+        }
+        lines[maxLines - 1] = (last || '').replace(/\s+$/g, '') + '...';
+      }
+    }
+    return lines;
+  }
+
+  function drawCanvasLines(canvasCtx, lines, x, y, lineHeight) {
+    lines.forEach(function (line, index) {
+      canvasCtx.fillText(line, x, y + index * lineHeight);
+    });
+    return y + Math.max(lines.length - 1, 0) * lineHeight;
+  }
+
+  function drawCoverImage(canvasCtx, image, x, y, size, plant) {
+    canvasCtx.save();
+    roundedRectPath(canvasCtx, x, y, size, size, 34);
+    canvasCtx.clip();
+    if (image && image.naturalWidth && image.naturalHeight) {
+      var ratio = Math.max(size / image.naturalWidth, size / image.naturalHeight);
+      var drawW = image.naturalWidth * ratio;
+      var drawH = image.naturalHeight * ratio;
+      canvasCtx.drawImage(image, x + (size - drawW) / 2, y + (size - drawH) / 2, drawW, drawH);
+    } else {
+      var fallback = canvasCtx.createLinearGradient(x, y, x + size, y + size);
+      fallback.addColorStop(0, '#2A3B57');
+      fallback.addColorStop(0.52, '#243A3D');
+      fallback.addColorStop(1, '#0c1516');
+      canvasCtx.fillStyle = fallback;
+      canvasCtx.fillRect(x, y, size, size);
+      canvasCtx.font = '40px "Noto Serif SC","Source Han Serif SC","Songti SC",serif';
+      canvasCtx.fillStyle = 'rgba(251,246,233,.72)';
+      canvasCtx.textAlign = 'center';
+      canvasCtx.textBaseline = 'middle';
+      canvasCtx.fillText(plant || '', x + size / 2, y + size / 2);
+    }
+    canvasCtx.restore();
+    canvasCtx.save();
+    canvasCtx.strokeStyle = 'rgba(241,185,104,.34)';
+    canvasCtx.lineWidth = 2;
+    roundedRectPath(canvasCtx, x, y, size, size, 34);
+    canvasCtx.stroke();
+    canvasCtx.restore();
+  }
+
+  async function drawPostcard(record, options) {
+    var snapshot = createPostcardRecordSnapshot(record);
+    var includeUserLine = Boolean(options && options.includeUserLine && canIncludeUserLine(snapshot));
+    if (document.fonts && document.fonts.ready) {
+      try { await document.fonts.ready; } catch (error) {}
+    }
+    var image = await loadPostcardImage(snapshot);
+    var canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 1440;
+    var canvasCtx = canvas.getContext('2d');
+    if (!canvasCtx) {
+      throw createPostcardGenerationError('drawPostcard:canvas-context', new Error('Canvas 2D context unavailable'));
+    }
+    var gradient = canvasCtx.createLinearGradient(0, 0, 1080, 1440);
+    gradient.addColorStop(0, '#243A3D');
+    gradient.addColorStop(0.5, '#2A3B57');
+    gradient.addColorStop(1, '#0c1516');
+    canvasCtx.fillStyle = gradient;
+    canvasCtx.fillRect(0, 0, 1080, 1440);
+
+    var glow = canvasCtx.createRadialGradient(540, 430, 80, 540, 430, 520);
+    glow.addColorStop(0, 'rgba(241,185,104,.22)');
+    glow.addColorStop(0.55, 'rgba(241,185,104,.08)');
+    glow.addColorStop(1, 'rgba(241,185,104,0)');
+    canvasCtx.fillStyle = glow;
+    canvasCtx.fillRect(0, 0, 1080, 1440);
+
+    canvasCtx.textAlign = 'center';
+    canvasCtx.textBaseline = 'alphabetic';
+    canvasCtx.fillStyle = 'rgba(251,246,233,.72)';
+    canvasCtx.font = '26px "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif';
+    setCanvasOptionalProperty(canvasCtx, 'letterSpacing', '0px');
+    canvasCtx.fillText('声息花园 Sonic Grove', 540, 104);
+
+    drawCoverImage(canvasCtx, image, 260, 178, 560, snapshot.plant);
+
+    canvasCtx.fillStyle = 'rgba(251,246,233,.92)';
+    canvasCtx.font = '54px "Noto Serif SC","Source Han Serif SC","Songti SC",serif';
+    var titleLines = wrapCanvasText(canvasCtx, snapshot.title || '', 800, 2);
+    var titleEnd = drawCanvasLines(canvasCtx, titleLines, 540, 832, 68);
+
+    canvasCtx.fillStyle = '#F1B968';
+    canvasCtx.font = '32px "Noto Serif SC","Source Han Serif SC","Songti SC",serif';
+    canvasCtx.fillText(snapshot.plant || '', 540, titleEnd + 70);
+
+    canvasCtx.fillStyle = 'rgba(251,246,233,.84)';
+    canvasCtx.font = '38px "Noto Serif SC","Source Han Serif SC","Songti SC",serif';
+    var flowerLines = wrapCanvasText(canvasCtx, snapshot.flowerWords || '', 760, 2);
+    var flowerEnd = drawCanvasLines(canvasCtx, flowerLines, 540, titleEnd + 136, 52);
+
+    var nextY = flowerEnd + 74;
+    if (includeUserLine) {
+      var entry = normalizeDiaryEntry(snapshot.diaryEntry);
+      var line = entry ? cleanDiaryLine(entry.userLine) : '';
+      canvasCtx.save();
+      canvasCtx.strokeStyle = 'rgba(241,185,104,.18)';
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(240, nextY - 28);
+      canvasCtx.lineTo(840, nextY - 28);
+      canvasCtx.stroke();
+      canvasCtx.restore();
+      canvasCtx.fillStyle = 'rgba(241,185,104,.72)';
+      canvasCtx.font = '23px "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif';
+      canvasCtx.fillText('夜话', 540, nextY);
+      canvasCtx.fillStyle = 'rgba(244,236,219,.76)';
+      canvasCtx.font = '28px "Noto Serif SC","Source Han Serif SC","Songti SC",serif';
+      var userLines = wrapCanvasText(canvasCtx, line, 760, 4);
+      drawCanvasLines(canvasCtx, userLines, 540, nextY + 48, 42);
+      nextY += 48 + Math.max(userLines.length, 1) * 42 + 38;
+    }
+
+    var anchor = snapshot.anchorSong || {};
+    var songLine = anchor.title ? '今夜锚定｜《' + anchor.title + '》' + (anchor.artist ? ' · ' + anchor.artist : '') : '';
+    canvasCtx.fillStyle = 'rgba(244,236,219,.62)';
+    canvasCtx.font = '24px "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif';
+    wrapCanvasText(canvasCtx, songLine, 760, 1).forEach(function (line) {
+      canvasCtx.fillText(line, 540, Math.max(nextY, 1260));
+    });
+
+    var dateText = formatRecordDate(snapshot.plantedAt || snapshot.createdAt) || getLocalDateStamp().replace(/-/g, '.');
+    canvasCtx.fillStyle = 'rgba(251,246,233,.48)';
+    canvasCtx.font = '22px "Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif';
+    canvasCtx.fillText(dateText, 540, 1344);
+    return canvas;
+  }
+
+  async function generatePostcardBlob(record, options) {
+    var canvas = await drawPostcard(record, options);
+    return new Promise(function (resolve, reject) {
+      if (!canvas || typeof canvas.toBlob !== 'function') {
+        reject(createPostcardGenerationError('canvas.toBlob', new Error('Canvas toBlob unavailable')));
+        return;
+      }
+      canvas.toBlob(function (blob) {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(createPostcardGenerationError('canvas.toBlob', new Error('Canvas toBlob failed')));
+        }
+      }, 'image/png');
+    });
+  }
+
+  function createPostcardFile(blob, record) {
+    var name = getPostcardFileName(record);
+    try {
+      return new File([blob], name, { type: 'image/png' });
+    } catch (error) {
+      blob.name = name;
+      return blob;
+    }
+  }
+
+  function canSharePostcard() {
+    if (!postcardState.file || !navigator.share || !navigator.canShare) return false;
+    try {
+      return navigator.canShare({ files: [postcardState.file] });
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function renderPostcardPreview() {
+    var ui = getPostcardUi();
+    if (!ui.card) return;
+    var isLoading = postcardState.status === 'loading';
+    var isReady = postcardState.status === 'ready';
+    var isError = postcardState.status === 'error';
+    var isSaveError = postcardState.status === 'save-error';
+    if (ui.preview) {
+      ui.preview.classList.toggle('hidden', !postcardState.objectUrl);
+      if (postcardState.objectUrl && ui.preview.src !== postcardState.objectUrl) {
+        ui.preview.src = postcardState.objectUrl;
+      }
+      if (!postcardState.objectUrl) ui.preview.removeAttribute('src');
+    }
+    if (ui.loading) {
+      ui.loading.classList.toggle('hidden', !isLoading);
+      ui.loading.textContent = isLoading ? '正在生成…' : '';
+    }
+    if (ui.status) {
+      ui.status.textContent = isError
+        ? '明信片没有生成成功，再试一次。'
+        : (isSaveError ? '图片保存失败，可以长按预览图保存。' : '');
+    }
+    if (ui.download) ui.download.disabled = !isReady;
+    if (ui.share) ui.share.classList.toggle('hidden', !isReady || !canSharePostcard());
+    if (ui.userLineToggle) ui.userLineToggle.disabled = isLoading;
+  }
+
+  async function regeneratePostcard() {
+    if (!postcardState.record) return;
+    var generationId = postcardState.generationId + 1;
+    postcardState.generationId = generationId;
+    postcardState.status = 'loading';
+    postcardState.blob = null;
+    postcardState.file = null;
+    revokePostcardObjectUrl();
+    renderPostcardPreview();
+    try {
+      var blob = await generatePostcardBlob(postcardState.record, {
+        includeUserLine: postcardState.includeUserLine
+      });
+      if (generationId !== postcardState.generationId) return;
+      if (!window.URL || typeof URL.createObjectURL !== 'function') {
+        throw createPostcardGenerationError('URL.createObjectURL', new Error('Object URL unavailable'));
+      }
+      var objectUrl = URL.createObjectURL(blob);
+      postcardState.blob = blob;
+      postcardState.objectUrl = objectUrl;
+      postcardState.file = createPostcardFile(blob, postcardState.record);
+      postcardState.status = 'ready';
+      renderPostcardPreview();
+    } catch (error) {
+      if (generationId !== postcardState.generationId) return;
+      console.error('[Sonic Grove][Postcard] generation failed', {
+        stage: error && error.postcardStage ? error.postcardStage : 'regeneratePostcard',
+        error: error
+      });
+      postcardState.status = 'error';
+      postcardState.blob = null;
+      postcardState.file = null;
+      revokePostcardObjectUrl();
+      renderPostcardPreview();
+    }
+  }
+
+  function openPostcardModal(record, triggerElement) {
+    if (!canGeneratePostcard(record)) return;
+    var ui = getPostcardUi();
+    if (!ui.overlay || !ui.card) return;
+    resetPostcardState();
+    postcardState.record = createPostcardRecordSnapshot(record);
+    postcardState.includeUserLine = false;
+    postcardState.triggerElement = triggerElement || document.activeElement;
+    postcardState.status = 'idle';
+    if (ui.userLineToggle) ui.userLineToggle.checked = false;
+    if (ui.userLineRow) ui.userLineRow.classList.toggle('hidden', !canIncludeUserLine(postcardState.record));
+    ui.overlay.classList.remove('hidden');
+    ui.card.classList.remove('hidden');
+    ui.overlay.setAttribute('aria-hidden', 'false');
+    ui.card.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('postcard-open');
+    renderPostcardPreview();
+    regeneratePostcard();
+    window.setTimeout(function () {
+      if (ui.close) ui.close.focus({ preventScroll: true });
+    }, 0);
+  }
+
+  function closePostcardModal() {
+    var ui = getPostcardUi();
+    if (!ui.overlay || !ui.card || ui.card.classList.contains('hidden')) return;
+    var trigger = postcardState.triggerElement;
+    ui.overlay.classList.add('hidden');
+    ui.card.classList.add('hidden');
+    ui.overlay.setAttribute('aria-hidden', 'true');
+    ui.card.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('postcard-open');
+    if (ui.preview) {
+      ui.preview.classList.add('hidden');
+      ui.preview.removeAttribute('src');
+    }
+    resetPostcardState();
+    renderPostcardPreview();
+    if (trigger && typeof trigger.focus === 'function') {
+      window.setTimeout(function () {
+        try { trigger.focus({ preventScroll: true }); } catch (error) { trigger.focus(); }
+      }, 0);
+    }
+  }
+
+  function downloadPostcard() {
+    if (!postcardState.objectUrl || !postcardState.blob || postcardState.status !== 'ready') {
+      postcardState.status = 'save-error';
+      renderPostcardPreview();
+      return;
+    }
+    try {
+      var link = document.createElement('a');
+      link.href = postcardState.objectUrl;
+      link.download = getPostcardFileName(postcardState.record);
+      link.rel = 'noopener';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      postcardState.status = 'ready';
+      renderPostcardPreview();
+    } catch (error) {
+      console.warn('[SonicGrove] postcard download failed', error);
+      postcardState.status = 'save-error';
+      renderPostcardPreview();
+    }
+  }
+
+  async function sharePostcard() {
+    if (!canSharePostcard()) return;
+    try {
+      await navigator.share({
+        files: [postcardState.file],
+        title: '今晚的花语明信片'
+      });
+    } catch (error) {
+      if (error && error.name === 'AbortError') return;
+      console.warn('[SonicGrove] postcard share failed', error);
+    }
+  }
+
+  function bindPostcardModal() {
+    var ui = getPostcardUi();
+    if (!ui.overlay || !ui.card || ui.bound) return;
+    ui.bound = true;
+    if (ui.close) ui.close.addEventListener('click', closePostcardModal);
+    ui.overlay.addEventListener('click', closePostcardModal);
+    if (ui.userLineToggle) {
+      ui.userLineToggle.addEventListener('change', function () {
+        postcardState.includeUserLine = Boolean(ui.userLineToggle.checked && canIncludeUserLine(postcardState.record));
+        regeneratePostcard();
+      });
+    }
+    if (ui.download) ui.download.addEventListener('click', downloadPostcard);
+    if (ui.share) ui.share.addEventListener('click', sharePostcard);
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !ui.card.classList.contains('hidden')) {
+        closePostcardModal();
+      }
+    });
+  }
+
   function normalizeRecordSnapshot(record, fallbackRecord) {
     var base = fallbackRecord || fallbackSongs[0] || mockRecord;
     var source = record || base;
@@ -1076,29 +1599,39 @@
   }
 
   function chooseFallbackByMood() {
-    var moodText = [state.answers.mood, state.answers.energy, state.answers.goal].join(' ');
-    if (/绷|紧|反复|自责/.test(moodText) || state.answers.tension > 78) return fallbackSongs[5];
-    if (/累|生病|沉|被好好接住/.test(moodText)) return fallbackSongs[2];
-    if (/空|陪伴|低落/.test(moodText)) return fallbackSongs[6];
-    if (/乱|说不清|听见|心事/.test(moodText)) return fallbackSongs[3];
-    if (/逃|压力|什么都不想/.test(moodText)) return fallbackSongs[4];
-    if (/平静|困但很清醒|停不下来/.test(moodText)) return fallbackSongs[0];
-    return fallbackSongs[1];
-  }
-
-  function buildSearchQuery() {
-    var words = ['晚安'];
-    if (/停不下|反复|困但很清醒/.test(state.answers.mood + state.answers.energy)) {
-      words.push('安静', '夜晚');
-    }
-    if (/空|陪伴|被好好接住/.test(state.answers.mood + state.answers.goal)) {
-      words.push('陪伴', '温柔');
-    }
-    if (/累|生病|绷/.test(state.answers.energy)) {
-      words.push('放松', '慢歌');
-    }
-    if (state.answers.tension > 70) words.push('低刺激');
-    return words.slice(0, 4).join(' ');
+    var answers = state.answers || {};
+    var diary = normalizeDiaryEntry(state.pendingDiaryEntry);
+    var text = [answers.mood, answers.energy, answers.goal, diary && diary.userLine].filter(Boolean).join(' ');
+    var tension = Number(answers.tension) || 0;
+    var scored = fallbackSongs.map(function (item, index) {
+      var score = 0;
+      if (index === 0) {
+        if (/停不下/.test(text) || (/清醒/.test(text) && /平静/.test(text))) score += 6;
+        if (tension >= 58 && tension <= 82) score += 2;
+      } else if (index === 1) {
+        if (/累|沉|温柔|放慢/.test(text)) score += 5;
+        if (/有人陪伴/.test(text)) score += 1;
+      } else if (index === 2) {
+        if (/生病|难受|撑|被好好接住|沉/.test(text)) score += 6;
+      } else if (index === 3) {
+        if (/乱|说不清|心事|听见|反复/.test(text)) score += 6;
+      } else if (index === 4) {
+        if (/压力|逃|什么都不想/.test(text)) score += 6;
+        if (tension >= 72 && !/绷|自责/.test(text)) score += 1;
+      } else if (index === 5) {
+        if (/绷|紧|自责|停止反刍/.test(text)) score += 6;
+        if (tension > 78 && /绷|反复|什么都不想|平静/.test(text)) score += 2;
+      } else if (index === 6) {
+        if (/空|陪伴|低落|保护/.test(text)) score += 6;
+      } else if (index === 7) {
+        if (/突然|想哭|柔软|安静/.test(text)) score += 5;
+      }
+      if (item.suitableMood && matchAnyText(text, item.suitableMood.split(/[\/\s]+/))) score += 2;
+      return { item: item, score: score };
+    }).sort(function (a, b) {
+      return b.score - a.score;
+    });
+    return scored[0] && scored[0].score > 0 ? scored[0].item : fallbackSongs[1];
   }
 
   function recordNoFromSong(song) {
@@ -1115,13 +1648,28 @@
       : mode === 'manual'
         ? [songTitle, artist].filter(Boolean).join(' ')
         : [preferredSong && preferredSong.artist, preferredSong && preferredSong.title].filter(Boolean).join(' ');
-    return {
+    var plan = {
       mode: mode,
       preset: preset,
       fallback: fallback,
       preferredSong: preferredSong,
+      searchKeywords: [state.answers.mood, state.answers.energy, state.answers.goal, state.pendingDiaryEntry && state.pendingDiaryEntry.userLine].filter(Boolean),
       query: query || '陈粒 光'
     };
+    lastSearchPlan = {
+      mode: plan.mode,
+      preset: plan.preset ? 'yeduGuang' : '',
+      fallback: plan.fallback ? {
+        title: plan.fallback.title,
+        plant: plan.fallback.plant,
+        anchorSong: plan.fallback.anchorSong
+      } : null,
+      preferredSong: plan.preferredSong,
+      searchKeywords: plan.searchKeywords.slice(),
+      query: plan.query
+    };
+    lastScoredSongs = [];
+    return plan;
   }
 
   function makeRecordFromSong(song, copyBase) {
@@ -1221,6 +1769,14 @@
       };
     }).sort(function (a, b) {
       return b.score - a.score;
+    });
+    lastScoredSongs = ranked.slice(0, 8).map(function (item) {
+      return {
+        title: item.song && (item.song.songTitle || item.song.songName),
+        artist: item.song && item.song.artist,
+        coverUrl: item.song && item.song.coverUrl,
+        score: item.score
+      };
     });
     return ranked[0] || null;
   }
@@ -1677,12 +2233,8 @@
   }
 
   function ensurePlaybackHint() {
-    if (!ui.playbackSub || document.getElementById('playback-preview-hint')) return;
-    var hint = document.createElement('p');
-    hint.id = 'playback-preview-hint';
-    hint.className = 'playback-preview-hint';
-    hint.textContent = '先听一小段今晚的黑胶。';
-    ui.playbackSub.insertAdjacentElement('afterend', hint);
+    var hint = document.getElementById('playback-preview-hint');
+    if (hint && hint.parentNode) hint.parentNode.removeChild(hint);
   }
 
   function stopPlayback() {
@@ -2260,6 +2812,7 @@
     var diaryLineEl = document.getElementById('bloom-diary-line');
     var diaryNoteSection = document.getElementById('bloom-diary-note-section');
     var diaryNoteEl = document.getElementById('bloom-diary-note');
+    var postcardBtn = document.getElementById('bloom-postcard-btn');
     var activeBloomRecord = null;
     var activeBloomView = 'front';
     var seedPreviewAudio = null;
@@ -2372,6 +2925,7 @@
       renderBloomDiary(record);
       setBloomView('front');
       if (flipBtn) flipBtn.classList.toggle('hidden', !canFlipDiary);
+      if (postcardBtn) postcardBtn.classList.toggle('hidden', !canGeneratePostcard(record));
       if (bgmRow) bgmRow.classList.toggle('hidden', !hasSeedPreview);
       overlay.classList.remove('hidden');
       card.classList.remove('hidden');
@@ -2399,6 +2953,13 @@
       flipBtn.addEventListener('click', function () {
         if (!activeBloomRecord || activeBloomRecord.isSeed) return;
         setBloomView(activeBloomView === 'front' ? 'diary' : 'front');
+      });
+    }
+
+    if (postcardBtn) {
+      postcardBtn.addEventListener('click', function () {
+        if (!canGeneratePostcard(activeBloomRecord)) return;
+        openPostcardModal(activeBloomRecord, postcardBtn);
       });
     }
 
@@ -2517,6 +3078,7 @@
     buildFireflies();
     renderFireflies();
     bindEvents();
+    bindPostcardModal();
     applyMockRecord();
     screens.forEach(function (screen) {
       const active = screen.classList.contains('active');
@@ -2649,6 +3211,33 @@
     };
   }
 
+  function getPostcardState() {
+    return {
+      hasRecord: Boolean(postcardState.record),
+      includeUserLine: postcardState.includeUserLine,
+      hasBlob: Boolean(postcardState.blob),
+      hasObjectUrl: Boolean(postcardState.objectUrl),
+      hasFile: Boolean(postcardState.file),
+      status: postcardState.status,
+      generationId: postcardState.generationId,
+      canShare: canSharePostcard()
+    };
+  }
+
+  function testPostcardData() {
+    var record = createPostcardRecordSnapshot(getCurrentRecord());
+    return {
+      canGenerate: canGeneratePostcard(record),
+      canIncludeUserLine: canIncludeUserLine(record),
+      plantCover: resolvePostcardPlantCover(record),
+      title: record.title,
+      plant: record.plant,
+      flowerWords: record.flowerWords,
+      anchorSong: record.anchorSong,
+      date: formatRecordDate(record.plantedAt || record.createdAt)
+    };
+  }
+
   document.addEventListener('DOMContentLoaded', init);
   window.SonicGroveDebug = {
     listAudioFiles: listAudioFiles,
@@ -2657,12 +3246,18 @@
     stopAllAudio: stopAllAudio,
     getCurrentRecord: getCurrentRecord,
     getLastSearchResult: function () { return lastSearchResult; },
+    getLastSearchPlan: function () { return lastSearchPlan; },
+    getLastScoredSongs: function () { return lastScoredSongs.slice(); },
+    getCurrentMatchReason: function () { return getCurrentRecord().matchReason || ''; },
     forceGuangPreset: forceGuangPreset,
     resolveRecordCover: resolveRecordCover,
     getShelfRecords: getShelfRecords,
     getPendingDiaryEntry: function () { return state.pendingDiaryEntry; },
     getLatestPlantedRecord: getLatestPlantedRecord,
     getPlantingState: getPlantingState,
+    canGeneratePostcard: canGeneratePostcard,
+    getPostcardState: getPostcardState,
+    testPostcardData: testPostcardData,
     previewAllMatchReasons: previewAllMatchReasons,
     getSeedRecords: function () { return SeedRecords.slice(); },
     getSeedAudioFiles: function () { return Object.assign({}, SeedAudioFiles); }

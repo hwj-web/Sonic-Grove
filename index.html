@@ -476,6 +476,7 @@
           <p class="bloom-anchor" id="bloom-anchor"></p>
           <p class="bloom-sides" id="bloom-sides"></p>
           <p class="bloom-note" id="bloom-note"></p>
+          <button type="button" class="bloom-postcard hidden" id="bloom-postcard-btn">生成花语明信片</button>
         </div>
         <div class="bloom-panel bloom-diary hidden" id="bloom-diary" aria-hidden="true">
           <p class="bloom-diary-date" id="bloom-diary-date"></p>
@@ -493,6 +494,25 @@
         <div class="bloom-bgm-row" id="bloom-bgm-row">
           <p class="bloom-bgm" id="bloom-bgm"></p>
           <button type="button" class="bloom-play" id="bloom-play-btn" aria-label="播放试听">▶</button>
+        </div>
+      </div>
+      <div class="postcard-overlay hidden" id="postcard-overlay" aria-hidden="true"></div>
+      <div class="postcard-card hidden" id="postcard-card" role="dialog" aria-modal="true" aria-labelledby="postcard-title" aria-hidden="true">
+        <button type="button" class="postcard-close" id="postcard-close" aria-label="关闭花语明信片">&times;</button>
+        <p class="postcard-title" id="postcard-title">今晚的花语明信片</p>
+        <div class="postcard-preview-wrap" id="postcard-preview-wrap">
+          <img class="postcard-preview hidden" id="postcard-preview" alt="">
+          <p class="postcard-loading" id="postcard-loading">正在生成…</p>
+        </div>
+        <label class="postcard-toggle hidden" id="postcard-userline-row">
+          <input type="checkbox" id="postcard-userline-toggle">
+          <span>带上夜话</span>
+        </label>
+        <p class="postcard-privacy">仅在本地生成，不会上传你的夜记。</p>
+        <p class="postcard-status" id="postcard-status" aria-live="polite"></p>
+        <div class="postcard-actions">
+          <button type="button" class="postcard-action" id="postcard-download">保存图片</button>
+          <button type="button" class="postcard-action postcard-share hidden" id="postcard-share">系统分享</button>
         </div>
       </div>
     </div>
