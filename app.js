@@ -22,6 +22,12 @@
     },
     sideA: '落地',
     sideB: '留白',
+    source: 'preset-fallback',
+    isSeed: false,
+    audioKey: 'anchor_guang_sleep_edit',
+    audioMode: 'mapped-preview',
+    previewLabel: '花语试听',
+    matchReason: '你说今晚脑海里的念头一个接一个，眼睛困了，脑海里还亮着。夜渡想先替你留住一束熟悉的光。',
     mood: {
       emotion: '停不下来的思考',
       energy: '困但很清醒',
@@ -40,18 +46,28 @@
       anchorSong: { title: '光', artist: '陈粒' },
       sideA: '落地',
       sideB: '留白',
-      suitableMood: '停不下来的思考 / 困但清醒 / 想平静下来',
+      source: 'preset-fallback',
+      isSeed: false,
+      audioKey: 'anchor_guang_sleep_edit',
+      audioMode: 'mapped-preview',
+      previewLabel: '花语试听',
+      matchReason: '你说今晚脑海里的念头一个接一个，眼睛困了，脑海里还亮着。夜渡想先替你留住一束熟悉的光。',
+      suitableMood: '停不下来的思考 / 困但很清醒 / 想平静下来',
       coverUrl: 'assets/cover_evening_primrose.webp'
     },
     {
       recordNo: 'No.0007',
-      title: '慢慢地，也算抵达',
+      title: '慢一点，也会抵达',
       plant: '薰衣草',
       flowerWords: '等一等，香气会自己回来',
-      note: '薰衣草不是一下子香起来的。它要晒过光，也要等过风。今晚不必急着好起来，慢一点，香气会自己回来。',
+      note: '薰衣草并不是一下子香起来的。它晒过光，也等过风。今晚不必急着好起来，把呼吸放慢一点，香气自会从安静里回来。',
       anchorSong: { title: '慢慢喜欢你', artist: '莫文蔚' },
       sideA: '放慢',
       sideB: '回温',
+      source: 'fallback',
+      isSeed: false,
+      audioMode: 'soundscape-preview',
+      previewLabel: '夜渡声景试听',
       suitableMood: '疲惫 / 想被安慰 / 需要一点温柔陪伴',
       coverUrl: 'assets/cover_a_sprig_of_lavender.webp'
     },
@@ -60,58 +76,78 @@
       title: '夜里也有花开',
       plant: '睡莲',
       flowerWords: '睡吧，水会将你托住',
-      note: '睡莲开在水面，却从不害怕夜色落下来。你也可以先不撑着了。睡吧，水会将你托住。',
+      note: '睡莲浮在水面，却把根安静地留在深处。今晚不必再用力撑着，水会托住你，直到呼吸慢下来。',
       anchorSong: { title: 'The Rose', artist: 'Westlife' },
       sideA: '下沉',
       sideB: '托住',
+      source: 'fallback',
+      isSeed: false,
+      audioMode: 'soundscape-preview',
+      previewLabel: '夜渡声景试听',
       suitableMood: '撑太久 / 身体很累 / 想安心睡去',
       coverUrl: 'assets/cover_a_water_lily.webp'
     },
     {
       recordNo: 'No.0009',
-      title: '把没说完的，放在夜里',
+      title: '把没说完的，留给夜里',
       plant: '蓝铃花',
       flowerWords: '低着头，也在轻轻奏响',
-      note: '蓝铃花总是低着头，好像不愿惊动谁。可风经过的时候，它也会很轻地响。没说完的话，今晚可以先放在这里。',
+      note: '蓝铃花总低着头，风经过时，才有很轻的响声。那些没说完的话，不必今晚就找到答案，先留在这里。',
       anchorSong: { title: '小半', artist: '陈粒' },
       sideA: '低语',
       sideB: '回声',
+      source: 'fallback',
+      isSeed: false,
+      audioMode: 'soundscape-preview',
+      previewLabel: '夜渡声景试听',
       suitableMood: '心事很多 / 不想解释 / 需要被听见',
       coverUrl: 'assets/cover_a_cluster_of_hanging_bluebells.webp'
     },
     {
       recordNo: 'No.0010',
-      title: '走到这里，已经很好',
+      title: '风来以前，先停一停',
       plant: '蒲公英',
-      flowerWords: '松开手，它就会飞翔',
-      note: '蒲公英不是被风带走的，它只是终于松开了自己。今天走到这里已经很好，剩下的路，明天再走也可以。',
+      flowerWords: '松开一点，风才会经过',
+      note: '蒲公英并不急着远行。风没来时，它只是安静地站着。今天先停在这里，剩下的路，等明天有风再走。',
       anchorSong: { title: '平凡之路', artist: '朴树' },
-      sideA: '放手',
-      sideB: '远行',
+      sideA: '停步',
+      sideB: '远风',
+      source: 'fallback',
+      isSeed: false,
+      audioMode: 'soundscape-preview',
+      previewLabel: '夜渡声景试听',
       suitableMood: '压力大 / 想逃离 / 需要一点释然',
       coverUrl: 'assets/cover_a_dandelion_seed_head.webp'
     },
     {
       recordNo: 'No.0011',
-      title: '今天到这里就好',
+      title: '今天，到这里就好',
       plant: '洋甘菊',
-      flowerWords: '把刺放下，也能睡着',
-      note: '洋甘菊没有很响亮的香气，只是在水里慢慢散开。今天到这里就好，你不用再把自己拧紧了。',
+      flowerWords: '慢慢散开，也能安睡',
+      note: '洋甘菊的香气一点点散进水里，不争，也不催。今天到这里就好，把肩膀放下来，夜晚会替你收住剩下的事。',
       anchorSong: { title: '晚安', artist: '颜人中' },
       sideA: '松开',
       sideB: '安睡',
+      source: 'fallback',
+      isSeed: false,
+      audioMode: 'soundscape-preview',
+      previewLabel: '夜渡声景试听',
       suitableMood: '紧绷 / 自责 / 想停止反刍',
       coverUrl: 'assets/cover_evening_primrose.webp'
     },
     {
       recordNo: 'No.0012',
-      title: '把坏心情泡软一点',
+      title: '风停在雪松以外',
       plant: '雪松',
-      flowerWords: '有人替你守着',
-      note: '雪松在冷天里也不急着低头。它只是站在那里，替很小的生命挡一会儿风。今晚也有人替你守着。',
+      flowerWords: '安静站着，也是一种陪伴',
+      note: '雪松在冷夜里不急着低头，只把枝叶撑开，让风从身旁绕过去。你不用一直清醒，先在它的影子里坐一会儿。',
       anchorSong: { title: '给你一瓶魔法药水', artist: '告五人' },
       sideA: '回暖',
-      sideB: '守夜',
+      sideB: '灯下',
+      source: 'fallback',
+      isSeed: false,
+      audioMode: 'soundscape-preview',
+      previewLabel: '夜渡声景试听',
       suitableMood: '有点低落 / 需要陪伴 / 想被保护一下',
       coverUrl: 'assets/cover_a_sprig_of_lavender.webp'
     },
@@ -120,16 +156,142 @@
       title: '忽然之间，夜安静了',
       plant: '白茉莉',
       flowerWords: '轻轻的，也足够',
-      note: '白茉莉不需要很大的月亮。只要一点点夜风，它就能把香气交出去。你也不需要证明很多，轻轻的，也足够。',
+      note: '白茉莉不需要很亮的月光，一点夜风，就够它把香气送出去。你也不用证明很多，今晚这样，已经足够。',
       anchorSong: { title: '忽然之间', artist: '莫文蔚' },
       sideA: '安静',
       sideB: '微光',
+      source: 'fallback',
+      isSeed: false,
+      audioMode: 'soundscape-preview',
+      previewLabel: '夜渡声景试听',
       suitableMood: '突然难过 / 想哭 / 需要柔软安放',
       coverUrl: 'assets/cover_a_water_lily.webp'
     }
   ];
 
+  const FlowerLibrary = {
+    '月见草': 'assets/cover_evening_primrose.webp',
+    '薰衣草': 'assets/cover_a_sprig_of_lavender.webp',
+    '睡莲': 'assets/cover_a_water_lily.webp',
+    '蓝铃花': 'assets/cover_a_cluster_of_hanging_bluebells.webp',
+    '蒲公英': 'assets/cover_a_dandelion_seed_head.webp',
+    '洋甘菊': 'assets/cover_evening_primrose.webp',
+    '雪松': 'assets/cover_a_sprig_of_lavender.webp',
+    '白茉莉': 'assets/cover_a_water_lily.webp'
+  };
+
+  const DemoPresets = {
+    yeduGuang: {
+      trigger: {
+        mood: ['停不下来的思考', '想太多', '脑子停不下来'],
+        energy: ['困但很清醒', '很困但睡不着'],
+        goal: ['平静下来', '睡着', '不再想太多']
+      },
+      searchQuery: '陈粒 光',
+      preferredSong: {
+        title: '光',
+        artist: '陈粒'
+      },
+      localAudio: 'anchor_guang_sleep_edit',
+      record: {
+        recordNo: 'No.0006',
+        title: '灯熄以后，光还在',
+        plant: '月见草',
+        flowerWords: '没人看，也会开',
+        sideA: '落地',
+        sideB: '留白',
+        source: 'preset-fallback',
+        isSeed: false,
+        audioKey: 'anchor_guang_sleep_edit',
+        audioMode: 'mapped-preview',
+        previewLabel: '花语试听',
+        note: '月见草是夜里才开的花。没人看，它也开。今天没有被谁看见，可你也好好地活过了一天。'
+      },
+      matchReason: '你说今晚脑海里的念头一个接一个，眼睛困了，脑海里还亮着。夜渡想先替你留住一束熟悉的光。'
+    }
+  };
+
+  const SeedAudioFiles = {
+    seed_perfume_sleep_edit: 'assets/seed_perfume_sleep_edit.mp3',
+    seed_zhenjiushu_sleep_edit: 'assets/seed_zhenjiushu_sleep_edit.mp3',
+    seed_dream_sleep_edit: 'assets/seed_dream_sleep_edit.mp3',
+    seed_chunlei_sleep_edit: 'assets/seed_chunlei_sleep_edit.mp3'
+  };
+
+  const SeedRecords = [
+    {
+      recordNo: 'No.0002',
+      title: '香气走得很慢',
+      plant: '薰衣草',
+      flowerWords: '等一等，香气会自己回来',
+      note: '薰衣草晒过白日的光，到了夜里，才把香气一点点还回来。有些事情也是这样，离远一些，反而在安静处显出轮廓。',
+      anchorSong: { title: 'perfume', artist: 'mehro' },
+      coverUrl: 'assets/cover_a_sprig_of_lavender.webp',
+      sideA: '近闻',
+      sideB: '余香',
+      audioKey: 'seed_perfume_sleep_edit',
+      audioMode: 'seed-preview',
+      previewLabel: '花语试听',
+      isSeed: true,
+      source: 'seed'
+    },
+    {
+      recordNo: 'No.0003',
+      title: '旧书合上以后',
+      plant: '睡莲',
+      flowerWords: '睡吧，水会将你托住',
+      note: '旧书翻到最后，纸页会自己安静下来。睡莲浮在水面，不问水底藏了什么。今晚把没读完的留在枕边，明天再翻。',
+      anchorSong: { title: '枕旧书', artist: '鸦青' },
+      coverUrl: 'assets/cover_a_water_lily.webp',
+      sideA: '合页',
+      sideB: '浮梦',
+      audioKey: 'seed_zhenjiushu_sleep_edit',
+      audioMode: 'seed-preview',
+      previewLabel: '花语试听',
+      isSeed: true,
+      source: 'seed'
+    },
+    {
+      recordNo: 'No.0004',
+      title: '梦在低处轻响',
+      plant: '蓝铃花',
+      flowerWords: '低着头，也在轻轻奏响',
+      note: '蓝铃花总低着头，风一来，整片花就有了很轻的声音。梦也未必要从高处开始，闭上眼，它会从耳边一点点长出来。',
+      anchorSong: { title: 'DREAM', artist: 'SEVENTEEN' },
+      coverUrl: 'assets/cover_a_cluster_of_hanging_bluebells.webp',
+      sideA: '微响',
+      sideB: '入梦',
+      audioKey: 'seed_dream_sleep_edit',
+      audioMode: 'seed-preview',
+      previewLabel: '花语试听',
+      isSeed: true,
+      source: 'seed'
+    },
+    {
+      recordNo: 'No.0005',
+      title: '雷声过后，风会来',
+      plant: '蒲公英',
+      flowerWords: '松开一点，风才会经过',
+      note: '蒲公英并不怕春雷。响声过去，它只等一阵风，把自己交给更远的地方。有些事可以松开一点，不必替明天攥得太紧。',
+      anchorSong: { title: '春雷', artist: '米津玄师' },
+      coverUrl: 'assets/cover_a_dandelion_seed_head.webp',
+      sideA: '余响',
+      sideB: '远风',
+      audioKey: 'seed_chunlei_sleep_edit',
+      audioMode: 'seed-preview',
+      previewLabel: '花语试听',
+      isSeed: true,
+      source: 'seed'
+    }
+  ];
+
   var currentRecord = fallbackSongs[0];
+  var lastSearchResult = null;
+  var lastShelfArchiveKey = '';
+  var openBloomCard = null;
+  var stopBloomPreview = function () {};
+  var syncBloomPreviewVolume = function () {};
+  const SHELF_RECORDS_KEY = 'sonic_grove_shelf_records';
 
   const state = {
     currentScreen: 'home',
@@ -154,6 +316,7 @@
     audioReady: false,
     bgmMuted: false,
     playbackEnding: false,
+    playbackPhase: 'idle',
     yeduWhisperTimeout: 0
   };
 
@@ -223,9 +386,19 @@
 
   const timeline = {
     total: 90,
+    needleEnd: 3,
     aEnd: 35,
     bridgeEnd: 50,
     bEnd: 85
+  };
+
+  const defaultSoundRecipe = {
+    mode: 'sleep-preview',
+    music: 'anchor_guang_sleep_edit',
+    ambience: ['rain', 'pink'],
+    sideA: '落地',
+    sideB: '留白',
+    description: '90 秒花语黑胶试听'
   };
 
   function clamp(value, min, max) {
@@ -316,12 +489,31 @@
     pool: {},
     files: {
       voice: 'assets/yedu_voice.mp3',
+      // Default Night Ferry Cat A-side sleep-preview anchor bed, not a QQ Music source track.
       music: 'assets/anchor_guang_sleep_edit.mp3',
+      // Low-stimulation sleep bed.
       pink: 'assets/pink_noise_loop.mp3',
+      // B-side ambience core.
       rain: 'assets/rain_loop.mp3',
       chime: 'assets/soft_magical_chime.mp3',
       needle: 'assets/falling_needle.mp3',
       bgm: 'assets/BGM_Sonic_Grove.mp3'
+    },
+    roles: {
+      voice: 'yedu_voice',
+      music: 'default_sleep_preview_anchor_bed',
+      pink: 'low_stimulation_sleep_noise',
+      rain: 'b_side_ambience_core',
+      chime: 'ui_chime',
+      needle: 'needle_drop',
+      bgm: 'garden_bgm'
+    },
+    aliases: {
+      anchor_guang_sleep_edit: 'music'
+    },
+    resolveAudioKey: function (name, fallback) {
+      var key = this.aliases[name] || name || fallback || 'music';
+      return this.files[key] ? key : (fallback || 'music');
     },
     ensureContext: function () {
       if (!this.context) {
@@ -342,7 +534,32 @@
       audio.preload = 'none';
       audio.loop = !!loop;
       audio._sgLoaded = false;
+      audio._sgFailed = false;
+      audio._sgWarned = false;
+      audio._sgName = key;
+      audio._sgFile = url;
+      audio.addEventListener('error', function () {
+        Sound.warnAudio(key, url);
+      });
       return audio;
+    },
+    warnAudio: function (name, file) {
+      var audio = name ? this.pool[name] : null;
+      if (audio && audio._sgWarned) return;
+      if (audio) {
+        audio._sgFailed = true;
+        audio._sgWarned = true;
+      }
+      console.warn('[SonicGrove] audio missing or failed', file || name);
+    },
+    safeReset: function (audio) {
+      if (!audio) return;
+      try { audio.pause(); } catch (error) {}
+      try { audio.currentTime = 0; } catch (error) {}
+    },
+    safeVolume: function (audio, volume) {
+      if (!audio || audio._sgFailed) return;
+      try { audio.volume = clamp(volume, 0, 1); } catch (error) {}
     },
     getAudio: function (name, loop) {
       var audio = this.pool[name];
@@ -356,8 +573,12 @@
     },
     loadAudio: function (audio) {
       if (!audio || audio._sgLoaded) return audio;
-      audio.load();
-      audio._sgLoaded = true;
+      try {
+        audio.load();
+        audio._sgLoaded = true;
+      } catch (error) {
+        this.warnAudio(audio._sgName, audio._sgFile);
+      }
       return audio;
     },
     unlock: function () {
@@ -379,48 +600,52 @@
     playFile: function (name, volume, loop) {
       if (!this.unlocked) return null;
       var audio = this.getAudio(name, !!loop);
-      if (!audio) return null;
+      if (!audio || audio._sgFailed) return null;
       this.loadAudio(audio);
-      audio.pause();
-      audio.currentTime = 0;
-      audio.volume = volume == null ? 1 : volume;
+      this.safeReset(audio);
+      this.safeVolume(audio, volume == null ? 1 : volume);
       audio.loop = !!loop;
-      audio.play().catch(function () {});
+      audio.play().catch(function () { Sound.warnAudio(name, Sound.files[name]); });
       return audio;
     },
     playAmbient: function () {
       this.unlock();
+      var musicKey = this.resolveAudioKey(getSoundRecipe().music, 'music');
       var rain = this.getAudio('rain', true);
       var pink = this.getAudio('pink', true);
-      var music = this.getAudio('music', false);
-      if (rain) {
+      var music = this.getAudio(musicKey, true);
+      if (rain && !rain._sgFailed) {
         this.loadAudio(rain);
         rain.loop = true;
-        rain.currentTime = 0;
-        rain.volume = clamp(0.3 * state.playbackVolume, 0, 1);
-        rain.play().catch(function () {});
+        this.safeReset(rain);
+        this.safeVolume(rain, 0);
+        rain.play().catch(function () { Sound.warnAudio('rain', Sound.files.rain); });
       }
-      if (pink) {
+      if (pink && !pink._sgFailed) {
         this.loadAudio(pink);
         pink.loop = true;
-        pink.currentTime = 0;
-        pink.volume = clamp(0.15 * state.playbackVolume, 0, 1);
-        pink.play().catch(function () {});
+        this.safeReset(pink);
+        this.safeVolume(pink, 0);
+        pink.play().catch(function () { Sound.warnAudio('pink', Sound.files.pink); });
       }
-      if (music) {
+      if (music && !music._sgFailed) {
         this.loadAudio(music);
-        music.loop = false;
-        music.currentTime = 0;
-        music.volume = clamp(0.8 * state.playbackVolume, 0, 1);
-        music.play().catch(function () {});
+        music.loop = true;
+        this.safeReset(music);
+        this.safeVolume(music, 0);
+        music.play().catch(function () { Sound.warnAudio('music', Sound.files.music); });
       }
     },
     stopAmbient: function () {
-      ['music', 'pink', 'rain', 'voice'].forEach(function (name) {
+      ['music', 'pink', 'rain', 'voice', 'needle'].forEach(function (name) {
         const audio = Sound.pool[name];
         if (!audio) return;
-        audio.pause();
-        audio.currentTime = 0;
+        Sound.safeReset(audio);
+      });
+    },
+    stopAll: function () {
+      Object.keys(this.pool).forEach(function (name) {
+        Sound.safeReset(Sound.pool[name]);
       });
     },
     startBgm: function () {
@@ -431,7 +656,7 @@
       bgm.volume = 0.18;
       bgm.loop = true;
       if (bgm.paused) {
-        bgm.play().catch(function () {});
+        bgm.play().catch(function () { Sound.warnAudio('bgm', Sound.files.bgm); });
       }
     },
     pauseBgm: function () {
@@ -453,19 +678,18 @@
       }
     },
     setAmbientVolumes: function (musicVolume, rainVolume, pinkVolume) {
-      if (this.pool.music) this.pool.music.volume = clamp(musicVolume * state.playbackVolume, 0, 1);
-      if (this.pool.rain) this.pool.rain.volume = clamp(rainVolume * state.playbackVolume, 0, 1);
-      if (this.pool.pink) this.pool.pink.volume = clamp(pinkVolume * state.playbackVolume, 0, 1);
+      if (this.pool.music) this.safeVolume(this.pool.music, musicVolume * state.playbackVolume);
+      if (this.pool.rain) this.safeVolume(this.pool.rain, rainVolume * state.playbackVolume);
+      if (this.pool.pink) this.safeVolume(this.pool.pink, pinkVolume * state.playbackVolume);
     },
     playVoice: function () {
       if (!this.unlocked) return;
       var voice = this.getAudio('voice', false);
-      if (!voice) return;
+      if (!voice || voice._sgFailed) return;
       this.loadAudio(voice);
-      voice.pause();
-      voice.currentTime = 0;
-      voice.volume = 0.6;
-      voice.play().catch(function () {});
+      this.safeReset(voice);
+      this.safeVolume(voice, 0.6);
+      voice.play().catch(function () { Sound.warnAudio('voice', Sound.files.voice); });
     },
     synth: function (kind, freq) {
       if (!this.unlocked) return;
@@ -533,6 +757,119 @@
     return String(url || fallback || 'assets/cover_evening_primrose.webp').replace(/^http:\/\//, 'https://');
   }
 
+  function resolveRecordCover(record) {
+    var source = record || {};
+    var anchor = source.anchorSong || {};
+    return normalizeCoverUrl(
+      source.coverUrl ||
+      anchor.coverUrl ||
+      FlowerLibrary[source.plant] ||
+      'assets/cover_evening_primrose.webp'
+    );
+  }
+
+  function normalizeRecordSnapshot(record, fallbackRecord) {
+    var base = fallbackRecord || fallbackSongs[0] || mockRecord;
+    var source = record || base;
+    var baseAnchor = base.anchorSong || {};
+    var sourceAnchor = source.anchorSong || {};
+    var anchorSong = {
+      title: sourceAnchor.title || source.songTitle || source.songName || baseAnchor.title || '',
+      artist: sourceAnchor.artist || source.artist || baseAnchor.artist || '',
+      coverUrl: sourceAnchor.coverUrl || source.coverUrl || baseAnchor.coverUrl || ''
+    };
+    var snapshot = {
+      recordNo: source.recordNo || base.recordNo || 'No.0006',
+      title: source.title || base.title || '',
+      plant: source.plant || base.plant || '月见草',
+      flowerWords: source.flowerWords || base.flowerWords || '',
+      note: source.note || base.note || '',
+      anchorSong: anchorSong,
+      sideA: source.sideA || base.sideA || defaultSoundRecipe.sideA,
+      sideB: source.sideB || base.sideB || defaultSoundRecipe.sideB,
+      source: source.source || base.source || 'dynamic',
+      isSeed: Boolean(source.isSeed || base.isSeed),
+      audioKey: source.audioKey || base.audioKey || '',
+      audioMode: source.audioMode || base.audioMode || '',
+      previewLabel: source.previewLabel || base.previewLabel || '',
+      suitableMood: source.suitableMood || base.suitableMood || '',
+      matchReason: source.matchReason || base.matchReason || '',
+      songId: source.songId || source.song_id || base.songId || '',
+      songMid: source.songMid || source.song_mid || base.songMid || '',
+      h5Url: source.h5Url || base.h5Url || '',
+      previewUrl: source.previewUrl || base.previewUrl || '',
+      playUrl: source.playUrl || base.playUrl || '',
+      soundRecipe: Object.assign({}, defaultSoundRecipe, base.soundRecipe || {}, source.soundRecipe || {})
+    };
+    snapshot.coverUrl = resolveRecordCover(Object.assign({}, snapshot, {
+      coverUrl: source.coverUrl || '',
+      anchorSong: anchorSong
+    }));
+    snapshot.anchorSong.coverUrl = snapshot.anchorSong.coverUrl || snapshot.coverUrl;
+    snapshot.soundRecipe.sideA = snapshot.soundRecipe.sideA || snapshot.sideA;
+    snapshot.soundRecipe.sideB = snapshot.soundRecipe.sideB || snapshot.sideB;
+    snapshot.soundRecipe.previewLabel = snapshot.soundRecipe.previewLabel || snapshot.previewLabel;
+    return snapshot;
+  }
+
+  function getShelfRecords() {
+    try {
+      var parsed = JSON.parse(localStorage.getItem(SHELF_RECORDS_KEY) || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveShelfRecords(records) {
+    try {
+      localStorage.setItem(SHELF_RECORDS_KEY, JSON.stringify(records.slice(0, 12)));
+    } catch (error) {}
+  }
+
+  function getRecordArchiveKey(record) {
+    var anchor = record && record.anchorSong ? record.anchorSong : {};
+    return [record && record.recordNo, record && record.title, anchor.title, anchor.artist].join('|');
+  }
+
+  function archiveCurrentRecord() {
+    var snapshot = normalizeRecordSnapshot(getCurrentRecord(), fallbackSongs[0]);
+    snapshot.createdAt = snapshot.createdAt || new Date().toISOString();
+    var key = getRecordArchiveKey(snapshot);
+    var records = getShelfRecords().filter(function (item) {
+      return getRecordArchiveKey(item) !== key;
+    });
+    records.unshift(snapshot);
+    saveShelfRecords(records);
+    lastShelfArchiveKey = key;
+    return snapshot;
+  }
+
+  function renderShelfRecords() {
+    var rack = document.querySelector('#screen-shelf .rack-records');
+    if (!rack) return;
+    var records = getShelfRecords();
+    var latest = records[0] || normalizeRecordSnapshot(getCurrentRecord(), fallbackSongs[0]);
+    var btn = rack.querySelector('.series-disc.current-record-disc');
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'series-disc current-record-disc';
+      rack.insertBefore(btn, rack.firstElementChild);
+    }
+    var cover = resolveRecordCover(latest);
+    btn.dataset.no = latest.recordNo;
+    btn.dataset.plant = latest.plant;
+    btn.dataset.words = latest.flowerWords;
+    btn.dataset.bgm = latest.anchorSong.title + '——' + latest.anchorSong.artist;
+    btn.innerHTML = '<img src="' + escapeHtml(cover) + '" alt="" onerror="this.classList.add(\'img-fail\')"><span>' + escapeHtml(latest.recordNo) + '</span>';
+    btn.onclick = function () {
+      if (openBloomCard) {
+        openBloomCard(latest);
+      }
+    };
+  }
+
   function getDeviceId() {
     var key = 'sonic_grove_device_id';
     try {
@@ -548,6 +885,88 @@
 
   function cleanText(value) {
     return String(value || '').replace(/[《》“”"'·\s]/g, '').toLowerCase();
+  }
+
+  function matchAnyText(text, words) {
+    var normalized = cleanText(text);
+    return (words || []).some(function (word) {
+      return normalized.indexOf(cleanText(word)) !== -1;
+    });
+  }
+
+  function getUserStateText() {
+    return [state.answers.mood, state.answers.energy, state.answers.goal].join(' ');
+  }
+
+  const YeduReasonFragments = {
+    mood: {
+      '停不下来的思考': '今晚脑海里的念头一个接一个',
+      '反复出现的课题': '有件事在心里来回走了很多遍',
+      '心情很乱说不清': '心里有些乱，还没找到合适的说法',
+      '心里空落落的': '今晚心里像空了一小块'
+    },
+    energy: {
+      '生病难受': '身体也正忙着照顾自己',
+      '累到发沉': '身体已经沉下来了',
+      '困但很清醒': '眼睛困了，脑海里还亮着',
+      '绷得紧紧的': '身体还像一根没有松开的弦'
+    },
+    goal: {
+      '有人陪伴': '留一首不催你开口的歌，陪你坐一会儿',
+      '平静下来': '先把声音放低，让今晚多一点空白',
+      '被好好接住': '选一首有落点的歌，让你不用一直撑着',
+      '什么都不想': '把声音变得简单一点，让今天到这里为止'
+    }
+  };
+
+  function buildYeduMatchReason(answers) {
+    var source = answers || {};
+    var mood = YeduReasonFragments.mood[source.mood] || YeduReasonFragments.mood[mockRecord.mood.emotion];
+    var energy = YeduReasonFragments.energy[source.energy] || YeduReasonFragments.energy[mockRecord.mood.energy];
+    var goal = YeduReasonFragments.goal[source.goal] || YeduReasonFragments.goal[mockRecord.mood.goal];
+    return mood + '，' + energy + '。夜渡想' + goal + '。';
+  }
+
+  function withYeduMatchReason(record) {
+    if (!record || record.matchReason) return record;
+    return Object.assign({}, record, {
+      matchReason: buildYeduMatchReason(state.answers)
+    });
+  }
+
+  function matchDemoPresetByState() {
+    var text = getUserStateText();
+    var preset = DemoPresets.yeduGuang;
+    var score = 0;
+    if (matchAnyText(text, preset.trigger.mood)) score += 1;
+    if (matchAnyText(text, preset.trigger.energy)) score += 1;
+    if (matchAnyText(text, preset.trigger.goal)) score += 1;
+    if (state.answers.tension >= 65 && matchAnyText(text, ['停不下来', '想太多', '清醒', '平静'])) score += 1;
+    return score >= 2 ? preset : null;
+  }
+
+  function matchDemoPresetByManual(songTitle, artist) {
+    var text = [songTitle, artist].join(' ');
+    var normalized = cleanText(text);
+    if (cleanText(songTitle) === cleanText(DemoPresets.yeduGuang.preferredSong.title)) return DemoPresets.yeduGuang;
+    if (cleanText(artist) === cleanText(DemoPresets.yeduGuang.preferredSong.artist)) return DemoPresets.yeduGuang;
+    if (normalized.indexOf(cleanText('陈粒光')) !== -1) return DemoPresets.yeduGuang;
+    return null;
+  }
+
+  function presetRecordBase(preset) {
+    if (!preset) return null;
+    return Object.assign({}, preset.record, {
+      anchorSong: Object.assign({}, preset.preferredSong),
+      matchReason: preset.matchReason,
+      coverUrl: FlowerLibrary[preset.record.plant] || 'assets/cover_evening_primrose.webp',
+      soundRecipe: Object.assign({}, defaultSoundRecipe, {
+        music: preset.localAudio || defaultSoundRecipe.music,
+        sideA: preset.record.sideA,
+        sideB: preset.record.sideB,
+        previewLabel: preset.record.previewLabel
+      })
+    });
   }
 
   function findFallbackBySong(songTitle, artist) {
@@ -591,22 +1010,52 @@
     return 'No.' + String(id % 10000).padStart(4, '0');
   }
 
-  function makeRecordFromSong(song, copyBase) {
-    var base = copyBase || chooseFallbackByMood();
+  function buildSearchPlan(mode, songTitle, artist) {
+    var preset = mode === 'manual' ? matchDemoPresetByManual(songTitle, artist) : matchDemoPresetByState();
+    var fallback = preset ? presetRecordBase(preset) : withYeduMatchReason(chooseFallbackByMood());
+    var preferredSong = preset ? preset.preferredSong : (fallback && fallback.anchorSong ? fallback.anchorSong : null);
+    var query = preset
+      ? preset.searchQuery
+      : mode === 'manual'
+        ? [songTitle, artist].filter(Boolean).join(' ')
+        : [preferredSong && preferredSong.artist, preferredSong && preferredSong.title].filter(Boolean).join(' ');
     return {
-      recordNo: recordNoFromSong(song),
+      mode: mode,
+      preset: preset,
+      fallback: fallback,
+      preferredSong: preferredSong,
+      query: query || '陈粒 光'
+    };
+  }
+
+  function makeRecordFromSong(song, copyBase) {
+    var base = withYeduMatchReason(copyBase || chooseFallbackByMood());
+    var hasRealSong = Boolean(song && (song.songId || song.songMid || song.coverUrl || song.h5Url));
+    return {
+      recordNo: base.recordNo || recordNoFromSong(song),
       title: base.title,
       plant: base.plant,
       flowerWords: base.flowerWords,
       note: base.note,
       anchorSong: {
         title: (song && (song.songTitle || song.songName)) || base.anchorSong.title,
-        artist: (song && song.artist) || base.anchorSong.artist
+        artist: (song && song.artist) || base.anchorSong.artist,
+        coverUrl: normalizeCoverUrl(song && song.coverUrl, base.anchorSong && base.anchorSong.coverUrl)
       },
       sideA: base.sideA,
       sideB: base.sideB,
+      source: hasRealSong ? 'dynamic' : (base.source || 'dynamic'),
+      isSeed: false,
+      audioKey: base.audioKey || '',
+      audioMode: base.audioMode || 'soundscape-preview',
+      previewLabel: base.previewLabel || '夜渡声景试听',
       suitableMood: base.suitableMood,
-      matchReason: base.matchReason || '它的声音足够轻，适合把今晚慢慢放低。',
+      matchReason: base.matchReason || buildYeduMatchReason(state.answers),
+      soundRecipe: Object.assign({}, defaultSoundRecipe, {
+        sideA: base.sideA,
+        sideB: base.sideB,
+        previewLabel: base.previewLabel
+      }),
       songId: song && song.songId,
       songMid: song && song.songMid,
       h5Url: song && song.h5Url,
@@ -617,7 +1066,7 @@
   }
 
   function setCurrentRecord(record) {
-    currentRecord = record || fallbackSongs[0];
+    currentRecord = normalizeRecordSnapshot(record, fallbackSongs[0]);
     applyMockRecord();
     return currentRecord;
   }
@@ -626,20 +1075,58 @@
     return currentRecord || fallbackSongs[0] || mockRecord;
   }
 
-  function pickBestSong(songs, desiredTitle, desiredArtist) {
+  function findSeedRecord(seedId) {
+    return SeedRecords.find(function (record) {
+      return record.recordNo === seedId;
+    }) || null;
+  }
+
+  function getSoundRecipe() {
+    var record = getCurrentRecord();
+    var recipe = Object.assign({}, defaultSoundRecipe, record && record.soundRecipe ? record.soundRecipe : {});
+    recipe.sideA = recipe.sideA || (record && record.sideA) || defaultSoundRecipe.sideA;
+    recipe.sideB = recipe.sideB || (record && record.sideB) || defaultSoundRecipe.sideB;
+    return recipe;
+  }
+
+  function scoreSongForYedu(song, userState) {
+    if (!song) return 0;
+    var title = cleanText(song.songTitle || song.songName);
+    var artist = cleanText(song.artist);
+    var preferred = userState && userState.preferredSong ? userState.preferredSong : {};
+    var desiredTitle = cleanText(userState && userState.desiredTitle || preferred.title || '');
+    var desiredArtist = cleanText(userState && userState.desiredArtist || preferred.artist || '');
+    var score = 0;
+    if (desiredTitle && title === desiredTitle) score += 50;
+    else if (desiredTitle && title.indexOf(desiredTitle) !== -1) score += 24;
+    else if (desiredTitle && desiredTitle.indexOf(title) !== -1) score += 12;
+    if (desiredArtist && artist === desiredArtist) score += 35;
+    else if (desiredArtist && artist.indexOf(desiredArtist) !== -1) score += 18;
+    if (song.playable || song.tryPlayable || song.previewUrl || song.playUrl) score += 5;
+    if (song.coverUrl) score += 2;
+    return score;
+  }
+
+  function pickBestSong(songs, desiredTitle, desiredArtist, options) {
     var list = Array.isArray(songs) ? songs : [];
     if (!list.length) return null;
-    var wantedSong = cleanText(desiredTitle);
-    var wantedArtist = cleanText(desiredArtist);
     var playable = list.filter(function (song) {
       return song && (song.playable || song.tryPlayable || song.previewUrl || song.playUrl);
     });
     var candidates = playable.length ? playable : list;
-    return candidates.find(function (song) {
-      var sameSong = !wantedSong || cleanText(song.songTitle || song.songName) === wantedSong;
-      var sameArtist = !wantedArtist || cleanText(song.artist).indexOf(wantedArtist) !== -1;
-      return sameSong && sameArtist;
-    }) || candidates[0];
+    var userState = Object.assign({}, options || {}, {
+      desiredTitle: desiredTitle,
+      desiredArtist: desiredArtist
+    });
+    var ranked = candidates.map(function (song) {
+      return {
+        song: song,
+        score: scoreSongForYedu(song, userState)
+      };
+    }).sort(function (a, b) {
+      return b.score - a.score;
+    });
+    return ranked[0] || null;
   }
 
   function fetchQQMusicSearch(query) {
@@ -656,36 +1143,50 @@
 
   function createRecordFromFallback(songTitle, artist) {
     var exact = findFallbackBySong(songTitle, artist);
-    if (exact) return Object.assign({}, exact, { coverUrl: normalizeCoverUrl(exact.coverUrl) });
-    var base = chooseFallbackByMood();
+    if (exact) return normalizeRecordSnapshot(withYeduMatchReason(exact), fallbackSongs[0]);
+    var base = withYeduMatchReason(chooseFallbackByMood());
     return makeRecordFromSong({ songTitle: songTitle, songName: songTitle, artist: artist }, base);
   }
 
   function createAutoRecord() {
-    var fallback = chooseFallbackByMood();
-    var query = buildSearchQuery();
-    return fetchQQMusicSearch(query).then(function (data) {
+    var plan = buildSearchPlan('auto');
+    var fallback = plan.fallback || withYeduMatchReason(chooseFallbackByMood());
+    return fetchQQMusicSearch(plan.query).then(function (data) {
+      lastSearchResult = Object.assign({ query: plan.query, plan: plan.mode, preset: plan.preset ? 'yeduGuang' : '' }, data || {});
       if (!data || !data.ok || !data.songs || !data.songs.length) {
-        return setCurrentRecord(Object.assign({}, fallback, { coverUrl: normalizeCoverUrl(fallback.coverUrl) }));
+        return setCurrentRecord(fallback);
       }
-      var song = pickBestSong(data.songs);
-      return setCurrentRecord(makeRecordFromSong(song, fallback));
+      var ranked = pickBestSong(data.songs, plan.preferredSong && plan.preferredSong.title, plan.preferredSong && plan.preferredSong.artist, {
+        preferredSong: plan.preferredSong
+      });
+      if (!ranked || ranked.score < 28) return setCurrentRecord(fallback);
+      return setCurrentRecord(makeRecordFromSong(ranked.song, fallback));
     });
   }
 
   function createManualRecord(songTitle, artist) {
-    return fetchQQMusicSearch((songTitle + ' ' + artist).trim()).then(function (data) {
+    var plan = buildSearchPlan('manual', songTitle, artist);
+    return fetchQQMusicSearch(plan.query).then(function (data) {
+      lastSearchResult = Object.assign({ query: plan.query, plan: plan.mode, preset: plan.preset ? 'yeduGuang' : '' }, data || {});
       if (!data || !data.ok || !data.songs || !data.songs.length) {
-        return setCurrentRecord(createRecordFromFallback(songTitle, artist));
+        return setCurrentRecord(plan.preset ? plan.fallback : createRecordFromFallback(songTitle, artist));
       }
-      var song = pickBestSong(data.songs, songTitle, artist);
+      var songTarget = plan.preferredSong || { title: songTitle, artist: artist };
+      var ranked = pickBestSong(data.songs, songTarget.title, songTarget.artist, {
+        preferredSong: plan.preferredSong,
+        desiredTitle: songTitle,
+        desiredArtist: artist
+      });
       var exact = findFallbackBySong(songTitle, artist);
-      return setCurrentRecord(makeRecordFromSong(song, exact || chooseFallbackByMood()));
+      if (!ranked || ranked.score < 24) {
+        return setCurrentRecord(plan.preset ? plan.fallback : createRecordFromFallback(songTitle, artist));
+      }
+      return setCurrentRecord(makeRecordFromSong(ranked.song, plan.preset ? plan.fallback : (exact || chooseFallbackByMood())));
     });
   }
 
   function updateRecordImages(record) {
-    var cover = normalizeCoverUrl(record && record.coverUrl);
+    var cover = resolveRecordCover(record);
     var selectors = [
       '#polaroid img',
       '#screen-reveal .record-sleeve img',
@@ -718,6 +1219,7 @@
     ui.playbackSub.textContent = record.recordNo + ' · ' + record.title + ' · 《' + record.anchorSong.title + '》' + record.anchorSong.artist;
     ui.shelfNote.textContent = record.recordNo + ' · ' + record.plant + ' · ' + record.title;
     updateRecordImages(record);
+    renderShelfRecords();
   }
 
   var chatStage;
@@ -841,7 +1343,7 @@
     var record = getCurrentRecord();
     var artist = record.anchorSong.artist;
     var title = record.anchorSong.title;
-    var cover = normalizeCoverUrl(record.coverUrl, 'assets/cover_GUANG.jpg');
+    var cover = resolveRecordCover(record);
     var html = '<article class="glass-panel match-card"><p class="bubble-mark">LIGHT CARD</p><div class="match-tabs" role="tablist"><button type="button" class="match-tab active" id="match-tab-auto" role="tab" aria-selected="true">自动匹配</button><button type="button" class="match-tab" id="match-tab-manual" role="tab" aria-selected="false">自主输入</button></div><div class="match-auto"><div class="album-line"><div class="album-thumb"><img src="' + escapeHtml(cover) + '" alt="' + escapeHtml(title) + '"></div><div class="album-copy"><p class="album-top">今天最适合陪伴你入睡的是</p><p class="album-main">' + escapeHtml(artist) + ' · 《' + escapeHtml(title) + '》</p></div></div><p class="album-bottom">《' + escapeHtml(title) + '》已经替你开出 ' + escapeHtml(record.recordNo) + ' 张花语唱片。</p></div></article>';
     var el = appendToChat(html, 'match-wrap');
     bindMatchTabs();
@@ -1002,6 +1504,64 @@
     return clamp(fromVolume * (1 - clamp(progress, 0, 1)), 0, 1);
   }
 
+  function getPlaybackElapsed() {
+    if (!state.playbackStartedAt) return 0;
+    return (performance.now() - state.playbackStartedAt) / 1000;
+  }
+
+  function getPlaybackPhase(elapsed) {
+    if (elapsed < timeline.needleEnd) return 'needle';
+    if (elapsed <= timeline.aEnd) return 'sideA';
+    if (elapsed <= timeline.bridgeEnd) return 'bridge';
+    if (elapsed <= timeline.bEnd) return 'sideB';
+    if (elapsed <= timeline.total) return 'ending';
+    return 'done';
+  }
+
+  function renderPlaybackFrame(elapsed) {
+    var safeElapsed = clamp(elapsed, 0, timeline.total);
+    var progress = clamp(safeElapsed / timeline.total, 0, 1);
+    var phase = getPlaybackPhase(safeElapsed);
+    var recipe = getSoundRecipe();
+    state.playbackPhase = phase;
+
+    app.style.setProperty('--curve-progress', String(progress));
+    app.style.setProperty('--playback-darkness', String(clamp((safeElapsed - 18) / 58, 0, 1)));
+    ui.playbackClock.textContent = formatTime(safeElapsed) + ' / 01:30';
+
+    if (phase === 'needle') {
+      var intro = clamp(safeElapsed / timeline.needleEnd, 0, 1);
+      ui.playbackPhase.textContent = '落针 · 入夜';
+      ui.markerA.classList.add('active');
+      ui.markerB.classList.remove('active');
+      Sound.setAmbientVolumes(0.72 * intro, 0.2 * intro, 0.1 * intro);
+    } else if (phase === 'sideA') {
+      ui.playbackPhase.textContent = 'A 面 · ' + recipe.sideA;
+      ui.markerA.classList.add('active');
+      ui.markerB.classList.remove('active');
+      Sound.setAmbientVolumes(0.72, 0.22, 0.11);
+    } else if (phase === 'bridge') {
+      var bridge = (safeElapsed - timeline.aEnd) / (timeline.bridgeEnd - timeline.aEnd);
+      ui.playbackPhase.textContent = '过渡 · 夜色渐深';
+      ui.markerA.classList.add('active');
+      ui.markerB.classList.add('active');
+      Sound.setAmbientVolumes(fadeOut(Sound.pool.music, 0.72, bridge), 0.22 + (0.06 * bridge), 0.11 + (0.05 * bridge));
+    } else if (phase === 'sideB') {
+      ui.playbackPhase.textContent = 'B 面 · ' + recipe.sideB;
+      ui.markerA.classList.remove('active');
+      ui.markerB.classList.add('active');
+      Sound.setAmbientVolumes(0, 0.28, 0.16);
+    } else {
+      var fade = clamp((safeElapsed - timeline.bEnd) / (timeline.total - timeline.bEnd), 0, 1);
+      ui.playbackPhase.textContent = '晚安 · 渐隐';
+      ui.markerA.classList.remove('active');
+      ui.markerB.classList.add('active');
+      if (fade >= 0.2) { ui.goodnight.classList.remove('hidden'); ui.goodnight.classList.add('show'); }
+      else { ui.goodnight.classList.add('hidden'); ui.goodnight.classList.remove('show'); }
+      Sound.setAmbientVolumes(0, fadeOut(Sound.pool.rain, 0.28, fade), fadeOut(Sound.pool.pink, 0.16, fade));
+    }
+  }
+
   function resetPlaybackVisuals() {
     app.style.setProperty('--playback-darkness', '0');
     app.style.setProperty('--curve-progress', '0');
@@ -1009,9 +1569,19 @@
     ui.goodnight.classList.remove('show');
     ui.markerA.classList.add('active');
     ui.markerB.classList.remove('active');
-    ui.playbackPhase.textContent = 'A 面 · 安放';
+    state.playbackPhase = 'idle';
+    ui.playbackPhase.textContent = 'A 面 · ' + getSoundRecipe().sideA;
     ui.playbackClock.textContent = '00:00 / 01:30';
     document.getElementById('screen-playback').classList.remove('playing');
+  }
+
+  function ensurePlaybackHint() {
+    if (!ui.playbackSub || document.getElementById('playback-preview-hint')) return;
+    var hint = document.createElement('p');
+    hint.id = 'playback-preview-hint';
+    hint.className = 'playback-preview-hint';
+    hint.textContent = '先听一小段今晚的黑胶。';
+    ui.playbackSub.insertAdjacentElement('afterend', hint);
   }
 
   function stopPlayback() {
@@ -1020,6 +1590,9 @@
     clearWhisper();
     state.playbackRaf = 0;
     state.playbackTimeout = 0;
+    state.playbackStartedAt = 0;
+    state.playbackPhase = 'idle';
+    state.playbackEnding = false;
     Sound.stopAmbient();
     resetPlaybackVisuals();
   }
@@ -1051,12 +1624,14 @@
   }
 
   function onPlaybackEnd() {
+    if (state.playbackEnding) return;
     state.playbackEnding = true;
     cancelAnimationFrame(state.playbackRaf);
     clearTimeout(state.playbackTimeout);
     clearWhisper();
     state.playbackRaf = 0;
     state.playbackTimeout = 0;
+    state.playbackPhase = 'done';
     Sound.stopAmbient();
     var breathEl = document.getElementById('breath-end');
     if (breathEl) {
@@ -1071,41 +1646,14 @@
       if (breathEl) { breathEl.classList.remove('show'); breathEl.classList.add('hidden'); }
       goTo('shelf');
       state.playbackEnding = false;
+      state.playbackStartedAt = 0;
+      state.playbackPhase = 'idle';
     }, 2400);
   }
 
   function updatePlaybackLoop() {
-    const elapsed = (performance.now() - state.playbackStartedAt) / 1000;
-    const progress = clamp(elapsed / timeline.total, 0, 1);
-    app.style.setProperty('--curve-progress', String(progress));
-    app.style.setProperty('--playback-darkness', String(clamp((elapsed - 18) / 58, 0, 1)));
-    ui.playbackClock.textContent = formatTime(elapsed) + ' / 01:30';
-
-    if (elapsed <= timeline.aEnd) {
-      ui.playbackPhase.textContent = 'A 面 · 安放';
-      ui.markerA.classList.add('active');
-      ui.markerB.classList.remove('active');
-      Sound.setAmbientVolumes(0.8, 0.3, 0.15);
-    } else if (elapsed <= timeline.bridgeEnd) {
-      const bridge = (elapsed - timeline.aEnd) / (timeline.bridgeEnd - timeline.aEnd);
-      ui.playbackPhase.textContent = '过渡 · 夜色渐深';
-      ui.markerA.classList.add('active');
-      ui.markerB.classList.add('active');
-      Sound.setAmbientVolumes(fadeOut(Sound.pool.music, 0.8, bridge), 0.3 + (0.2 * bridge), 0.15);
-    } else if (elapsed <= timeline.bEnd) {
-      ui.playbackPhase.textContent = 'B 面 · 只剩呼吸与雨';
-      ui.markerA.classList.remove('active');
-      ui.markerB.classList.add('active');
-      Sound.setAmbientVolumes(0, 0.5, 0.15);
-    } else {
-      const fade = clamp((elapsed - timeline.bEnd) / (timeline.total - timeline.bEnd), 0, 1);
-      ui.playbackPhase.textContent = '晚安 · 渐隐';
-      ui.markerA.classList.remove('active');
-      ui.markerB.classList.add('active');
-      if (fade >= 0.2) { ui.goodnight.classList.remove('hidden'); ui.goodnight.classList.add('show'); }
-      else { ui.goodnight.classList.add('hidden'); ui.goodnight.classList.remove('show'); }
-      Sound.setAmbientVolumes(0, fadeOut(Sound.pool.rain, 0.5, fade), fadeOut(Sound.pool.pink, 0.15, fade));
-    }
+    const elapsed = getPlaybackElapsed();
+    renderPlaybackFrame(elapsed);
 
     if (elapsed < timeline.total) {
       state.playbackRaf = requestAnimationFrame(updatePlaybackLoop);
@@ -1117,6 +1665,8 @@
   function startPlayback() {
     stopPlayback();
     goTo('playback');
+    Sound.pauseBgm();
+    Sound.unlock();
     var pb = document.getElementById('screen-playback');
     if (pb) pb.classList.remove('eyes-closed');
     var hint = document.getElementById('eyes-closed-hint');
@@ -1128,12 +1678,13 @@
     ui.goodnight.classList.remove('show');
     Sound.playFile('needle', 0.7, false);
     Sound.playAmbient();
-    Sound.setAmbientVolumes(0.8, 0.3, 0.15);
     state.playbackStartedAt = performance.now();
+    state.playbackEnding = false;
+    renderPlaybackFrame(0);
     state.playbackRaf = requestAnimationFrame(updatePlaybackLoop);
     state.playbackTimeout = window.setTimeout(function () {
       onPlaybackEnd();
-    }, timeline.total * 1000);
+    }, (timeline.total * 1000) + 500);
     scheduleWhisper();
   }
 
@@ -1310,6 +1861,9 @@
     if (state.currentScreen === 'playback' && id !== 'playback') {
       if (!state.playbackEnding) stopPlayback();
     }
+    if (state.currentScreen === 'shelf' && id !== 'shelf') {
+      stopBloomPreview();
+    }
     if (state.currentScreen === 'engrave' && id !== 'engrave') {
       resetEngrave();
     }
@@ -1339,6 +1893,11 @@
     }
     if (id === 'reveal') {
       Sound.synth('reveal');
+      applyMockRecord();
+    }
+    if (id === 'shelf') {
+      archiveCurrentRecord();
+      applyMockRecord();
     }
   }
 
@@ -1524,8 +2083,9 @@
 
     ui.volumeSlider.addEventListener('input', function () {
       state.playbackVolume = Number(ui.volumeSlider.value) / 100;
-      if (state.currentScreen === 'playback') {
-        updatePlaybackLoop();
+      syncBloomPreviewVolume();
+      if (state.currentScreen === 'playback' && state.playbackStartedAt) {
+        renderPlaybackFrame(getPlaybackElapsed());
       }
     });
 
@@ -1575,20 +2135,90 @@
     var closeBtn = document.getElementById('bloom-close');
     var coverImg = document.getElementById('bloom-cover-img');
     var noEl = document.getElementById('bloom-no');
+    var titleEl = document.getElementById('bloom-title');
     var plantEl = document.getElementById('bloom-plant');
     var wordsEl = document.getElementById('bloom-words');
+    var anchorEl = document.getElementById('bloom-anchor');
+    var sidesEl = document.getElementById('bloom-sides');
+    var noteEl = document.getElementById('bloom-note');
     var bgmEl = document.getElementById('bloom-bgm');
     var playBtn = document.getElementById('bloom-play-btn');
-    var bloomAudio = null;
+    var activeBloomRecord = null;
+    var seedPreviewAudio = null;
+    var seedPreviewLoading = false;
+    var seedPreviewToken = 0;
     if (!overlay || !card) return;
 
-    function open(no, plant, words, coverSrc, bgm) {
-      if (noEl) noEl.textContent = no;
-      if (plantEl) plantEl.textContent = plant;
-      if (wordsEl) wordsEl.textContent = '“' + words + '”';
-      if (bgmEl) bgmEl.textContent = bgm ? 'BGM：' + bgm : '';
-      if (coverImg && coverSrc) {
-        coverImg.innerHTML = '<img src="' + coverSrc + '" alt="' + plant + '" onerror="this.classList.add(\'img-fail\')">';
+    function resetBloomButton() {
+      if (!playBtn) return;
+      playBtn.textContent = '▶';
+      playBtn.classList.remove('playing', 'loading');
+    }
+
+    function setBloomLoading() {
+      if (!playBtn) return;
+      playBtn.textContent = '载入中';
+      playBtn.classList.add('loading');
+      playBtn.classList.remove('playing');
+    }
+
+    function setBloomPlaying() {
+      if (!playBtn) return;
+      playBtn.textContent = '⏸';
+      playBtn.classList.add('playing');
+      playBtn.classList.remove('loading');
+    }
+
+    function stopSeedPreview(resetButton) {
+      seedPreviewToken += 1;
+      seedPreviewLoading = false;
+      if (seedPreviewAudio) {
+        try { seedPreviewAudio.pause(); } catch (error) {}
+        try { seedPreviewAudio.currentTime = 0; } catch (error) {}
+        seedPreviewAudio = null;
+      }
+      if (resetButton !== false) resetBloomButton();
+    }
+
+    stopBloomPreview = function () {
+      stopSeedPreview(true);
+    };
+
+    syncBloomPreviewVolume = function () {
+      if (seedPreviewAudio) {
+        try { seedPreviewAudio.volume = clamp(state.playbackVolume, 0, 1); } catch (error) {}
+      }
+    };
+
+    function getBloomPreviewLabel(record) {
+      if (!record) return '';
+      if (record.previewLabel) return record.previewLabel;
+      return record.isSeed || record.audioMode === 'mapped-preview' ? '花语试听' : '夜渡声景试听';
+    }
+
+    function canPlaySeedPreview(record) {
+      return Boolean(record && record.isSeed && record.audioKey && SeedAudioFiles[record.audioKey]);
+    }
+
+    function openRecord(record) {
+      if (!record) return;
+      stopSeedPreview(true);
+      activeBloomRecord = record;
+      var anchor = record.anchorSong || {};
+      if (noEl) noEl.textContent = record.recordNo || '';
+      if (titleEl) titleEl.textContent = record.title || '';
+      if (plantEl) plantEl.textContent = record.plant || '';
+      if (wordsEl) wordsEl.textContent = record.flowerWords ? '“' + record.flowerWords + '”' : '';
+      if (anchorEl) anchorEl.textContent = anchor.title ? '《' + anchor.title + '》 · ' + (anchor.artist || '') : '';
+      if (sidesEl) sidesEl.textContent = 'A 面 · ' + (record.sideA || '') + ' / B 面 · ' + (record.sideB || '');
+      if (noteEl) noteEl.textContent = record.note || '';
+      if (bgmEl) bgmEl.textContent = getBloomPreviewLabel(record);
+      if (coverImg) {
+        coverImg.innerHTML = '<img src="' + escapeHtml(resolveRecordCover(record)) + '" alt="' + escapeHtml(record.plant || '') + '" onerror="this.classList.add(\'img-fail\')">';
+      }
+      if (playBtn) {
+        playBtn.disabled = !canPlaySeedPreview(record);
+        playBtn.setAttribute('aria-label', canPlaySeedPreview(record) ? '播放花语试听' : '暂无独立试听');
       }
       overlay.classList.remove('hidden');
       card.classList.remove('hidden');
@@ -1596,14 +2226,15 @@
       card.setAttribute('aria-hidden', 'false');
       Sound.synth('click');
     }
+    openBloomCard = openRecord;
 
     function close() {
       overlay.classList.add('hidden');
       card.classList.add('hidden');
       overlay.setAttribute('aria-hidden', 'true');
       card.setAttribute('aria-hidden', 'true');
-      if (playBtn) { playBtn.textContent = '▶'; playBtn.classList.remove('playing'); }
-      if (bloomAudio) { bloomAudio.pause(); bloomAudio = null; }
+      activeBloomRecord = null;
+      stopSeedPreview(true);
     }
 
     if (closeBtn) closeBtn.addEventListener('click', close);
@@ -1612,29 +2243,64 @@
     if (playBtn) {
       playBtn.addEventListener('click', function (e) {
         e.stopPropagation();
+        if (!activeBloomRecord || !canPlaySeedPreview(activeBloomRecord) || seedPreviewLoading) return;
         if (playBtn.classList.contains('playing')) {
-          playBtn.textContent = '▶';
-          playBtn.classList.remove('playing');
-          if (bloomAudio) { bloomAudio.pause(); bloomAudio = null; }
-        } else {
-          playBtn.textContent = '⏸';
-          playBtn.classList.add('playing');
-          var no = (noEl && noEl.textContent) || '';
-          if (no === 'No.0006' && Sound.unlocked) {
-            bloomAudio = Sound.playFile('music', 0.65, false);
-            if (bloomAudio) {
-              bloomAudio.addEventListener('ended', function () {
-                playBtn.textContent = '▶';
-                playBtn.classList.remove('playing');
-                bloomAudio = null;
-              });
-            }
-          }
+          if (seedPreviewAudio) seedPreviewAudio.pause();
+          resetBloomButton();
+          return;
         }
+        if (seedPreviewAudio && seedPreviewAudio.paused && seedPreviewAudio.currentTime > 0) {
+          var resumeToken = seedPreviewToken;
+          syncBloomPreviewVolume();
+          seedPreviewAudio.play().then(function () {
+            if (resumeToken === seedPreviewToken) setBloomPlaying();
+          }).catch(function (error) {
+            if (resumeToken !== seedPreviewToken) return;
+            console.warn('[SonicGrove] seed preview failed', activeBloomRecord.audioKey, error);
+            stopSeedPreview(true);
+          });
+          return;
+        }
+
+        stopSeedPreview(false);
+        var audioKey = activeBloomRecord.audioKey;
+        var file = SeedAudioFiles[audioKey];
+        if (!file) {
+          console.warn('[SonicGrove] seed preview failed', audioKey, new Error('Missing seed audio mapping'));
+          resetBloomButton();
+          return;
+        }
+        seedPreviewLoading = true;
+        var token = seedPreviewToken;
+        setBloomLoading();
+        seedPreviewAudio = new Audio();
+        seedPreviewAudio.preload = 'none';
+        seedPreviewAudio.src = file;
+        syncBloomPreviewVolume();
+        seedPreviewAudio.addEventListener('ended', function () {
+          if (token !== seedPreviewToken) return;
+          stopSeedPreview(true);
+        });
+        seedPreviewAudio.addEventListener('error', function (error) {
+          if (token !== seedPreviewToken) return;
+          console.warn('[SonicGrove] seed preview failed', audioKey, error);
+          stopSeedPreview(true);
+        });
+        seedPreviewAudio.addEventListener('playing', function () {
+          if (token !== seedPreviewToken) return;
+          seedPreviewLoading = false;
+          setBloomPlaying();
+        });
+        seedPreviewAudio.load();
+        seedPreviewAudio.play().catch(function (error) {
+          if (token !== seedPreviewToken) return;
+          console.warn('[SonicGrove] seed preview failed', audioKey, error);
+          stopSeedPreview(true);
+        });
       });
       card.addEventListener('transitionend', function () {
-        if (card.classList.contains('hidden') && bloomAudio) {
-          bloomAudio.pause(); bloomAudio = null;
+        if (card.classList.contains('hidden')) {
+          stopSeedPreview(true);
         }
       });
     }
@@ -1643,19 +2309,14 @@
     if (heroBtn) {
       heroBtn.addEventListener('click', function () {
         var record = getCurrentRecord();
-        open(record.recordNo, record.plant, record.flowerWords, normalizeCoverUrl(record.coverUrl), record.anchorSong.title + '——' + record.anchorSong.artist);
+        openRecord(record);
       });
     }
 
     Array.from(document.querySelectorAll('.series-disc')).forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var no = btn.dataset.no || '';
-        var plant = btn.dataset.plant || '';
-        var words = btn.dataset.words || '';
-        var bgm = btn.dataset.bgm || '';
-        var img = btn.querySelector('img');
-        var coverSrc = img ? (img.getAttribute('src') || '') : '';
-        open(no, plant, words, coverSrc, bgm);
+        var seed = findSeedRecord(btn.dataset.seedId || '');
+        if (seed) openRecord(seed);
       });
     });
   }
@@ -1667,11 +2328,13 @@
     if (skipBBtn) skipBBtn.addEventListener('click', function () {
       if (state.currentScreen !== 'playback') return;
       state.playbackStartedAt = performance.now() - (timeline.bridgeEnd * 1000);
+      renderPlaybackFrame(timeline.bridgeEnd);
       scheduleWhisper();
     });
     if (skipEndBtn) skipEndBtn.addEventListener('click', function () {
       if (state.currentScreen !== 'playback') return;
       state.playbackStartedAt = performance.now() - (timeline.bEnd * 1000);
+      renderPlaybackFrame(timeline.bEnd);
       scheduleWhisper();
     });
 
@@ -1702,12 +2365,127 @@
     });
     updateElfBubble();
     refreshChatState();
+    ensurePlaybackHint();
     resetEngrave();
     resetPlaybackVisuals();
     app.dataset.fireflies = 'float';
   }
 
+  function getActiveAudios() {
+    return Object.keys(Sound.pool).filter(function (name) {
+      var audio = Sound.pool[name];
+      return audio && !audio.paused && !audio.ended;
+    });
+  }
+
+  function listAudioFiles() {
+    return Object.keys(Sound.files).map(function (name) {
+      var loop = name === 'rain' || name === 'pink' || name === 'bgm';
+      var audio = Sound.getAudio(name, loop);
+      if (audio) Sound.loadAudio(audio);
+      return {
+        name: name,
+        file: Sound.files[name],
+        role: Sound.roles[name] || '',
+        declared: Boolean(Sound.files[name]),
+        loaded: Boolean(audio && audio._sgLoaded),
+        failed: Boolean(audio && audio._sgFailed),
+        readyState: audio ? audio.readyState : 0,
+        networkState: audio ? audio.networkState : 0
+      };
+    });
+  }
+
+  function testAudio() {
+    Sound.unlock();
+    Sound.stopAmbient();
+    Sound.playAmbient();
+    Sound.setAmbientVolumes(0.45, 0.22, 0.12);
+    window.setTimeout(function () {
+      Sound.stopAmbient();
+    }, 4800);
+    return {
+      ok: true,
+      durationMs: 4800,
+      activeAudios: getActiveAudios()
+    };
+  }
+
+  function getPlaybackState() {
+    var elapsed = getPlaybackElapsed();
+    return {
+      currentScreen: state.currentScreen,
+      playbackStartedAt: state.playbackStartedAt,
+      elapsed: elapsed,
+      phase: state.playbackStartedAt ? getPlaybackPhase(clamp(elapsed, 0, timeline.total)) : state.playbackPhase,
+      volume: state.playbackVolume,
+      isEnding: state.playbackEnding,
+      activeAudios: getActiveAudios(),
+      currentRecord: {
+        anchorSong: getCurrentRecord().anchorSong
+      },
+      soundRecipe: getSoundRecipe()
+    };
+  }
+
+  function stopAllAudio() {
+    cancelAnimationFrame(state.playbackRaf);
+    clearTimeout(state.playbackTimeout);
+    clearWhisper();
+    state.playbackRaf = 0;
+    state.playbackTimeout = 0;
+    state.playbackStartedAt = 0;
+    state.playbackPhase = 'idle';
+    state.playbackEnding = false;
+    stopBloomPreview();
+    Sound.stopAll();
+    resetPlaybackVisuals();
+    return { ok: true, activeAudios: getActiveAudios() };
+  }
+
+  function previewAllMatchReasons() {
+    var results = [];
+    Q1.forEach(function (mood) {
+      Q2.forEach(function (energy) {
+        Q3.forEach(function (goal) {
+          results.push({
+            mood: mood,
+            energy: energy,
+            goal: goal,
+            matchReason: buildYeduMatchReason({
+              mood: mood,
+              energy: energy,
+              goal: goal
+            })
+          });
+        });
+      });
+    });
+    return results;
+  }
+
+  function forceGuangPreset() {
+    var record = setCurrentRecord(presetRecordBase(DemoPresets.yeduGuang));
+    archiveCurrentRecord();
+    renderShelfRecords();
+    return record;
+  }
+
   document.addEventListener('DOMContentLoaded', init);
+  window.SonicGroveDebug = {
+    listAudioFiles: listAudioFiles,
+    testAudio: testAudio,
+    getPlaybackState: getPlaybackState,
+    stopAllAudio: stopAllAudio,
+    getCurrentRecord: getCurrentRecord,
+    getLastSearchResult: function () { return lastSearchResult; },
+    forceGuangPreset: forceGuangPreset,
+    resolveRecordCover: resolveRecordCover,
+    getShelfRecords: getShelfRecords,
+    previewAllMatchReasons: previewAllMatchReasons,
+    getSeedRecords: function () { return SeedRecords.slice(); },
+    getSeedAudioFiles: function () { return Object.assign({}, SeedAudioFiles); }
+  };
   window.SonicGrove = {
     goTo: goTo,
     state: state,
@@ -1718,6 +2496,7 @@
     startPlayback: startPlayback,
     stopPlayback: stopPlayback,
     fadeOut: fadeOut,
-    onPlaybackEnd: onPlaybackEnd
+    onPlaybackEnd: onPlaybackEnd,
+    getSoundRecipe: getSoundRecipe
   };
 })();

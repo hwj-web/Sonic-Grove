@@ -1352,6 +1352,13 @@ input[type="range"]::-webkit-slider-thumb{
   letter-spacing:2px;
   color:rgba(244,236,219,.62);
 }
+.playback-preview-hint{
+  margin-top:5px;
+  font-size:10px;
+  line-height:1.7;
+  letter-spacing:1.6px;
+  color:rgba(241,185,104,.58);
+}
 .playback-meta{
   display:flex;
   flex-direction:column;
@@ -1920,13 +1927,15 @@ input[type="range"]::-webkit-slider-thumb{
 .bloom-card{
   position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) translateY(8px);
   z-index:13;
-  width:264px;
-  padding:28px 22px 22px;
+  width:min(304px, calc(100% - 42px));
+  max-height:82%;
+  padding:26px 22px 22px;
   border-radius:24px;
   background:linear-gradient(180deg, rgba(22,38,42,.94), rgba(12,20,22,.96));
   border:1px solid rgba(241,185,104,.24);
   box-shadow:0 0 50px rgba(241,185,104,.08),var(--shadow);
   display:flex;flex-direction:column;align-items:center;gap:14px;
+  overflow:auto;
   opacity:0;pointer-events:none;
   transition:opacity .5s var(--ease),transform .5s var(--ease);
 }
@@ -1955,13 +1964,27 @@ input[type="range"]::-webkit-slider-thumb{
 .bloom-no{
   font-size:10.5px;letter-spacing:5px;color:rgba(251,246,233,.5);
 }
+.bloom-title{
+  font-family:var(--serif);font-size:18px;letter-spacing:2.4px;color:rgba(251,246,233,.9);
+  text-align:center;line-height:1.45;margin-top:-4px;
+}
 .bloom-plant{
-  font-family:var(--serif);font-size:17px;letter-spacing:3px;color:var(--star);
+  font-family:var(--serif);font-size:15px;letter-spacing:3px;color:var(--star);
   text-shadow:0 0 20px rgba(241,185,104,.14);
 }
 .bloom-words{
   font-family:var(--serif);font-size:15px;letter-spacing:2px;color:rgba(251,246,233,.82);
   text-align:center;line-height:1.8;
+}
+.bloom-anchor,.bloom-sides,.bloom-note{
+  text-align:center;color:rgba(244,236,219,.58);
+}
+.bloom-anchor,.bloom-sides{
+  font-size:10.5px;letter-spacing:2px;line-height:1.7;
+}
+.bloom-note{
+  font-size:12px;letter-spacing:1.2px;line-height:1.9;
+  max-width:238px;color:rgba(244,236,219,.68);
 }
 .bloom-bgm-row{
   display:flex;align-items:center;gap:8px;margin-top:2px;
@@ -1982,6 +2005,12 @@ input[type="range"]::-webkit-slider-thumb{
   border-color:rgba(241,185,104,.6);
   box-shadow:0 0 14px rgba(241,185,104,.18);
   background:rgba(241,185,104,.08);
+}
+.bloom-play:disabled{
+  opacity:.38;cursor:default;box-shadow:none;
+}
+.bloom-play.loading{
+  width:auto;border-radius:999px;padding:0 10px;font-size:10px;
 }
 
 .hero-no{font-size:11px;letter-spacing:3px;color:rgba(251,246,233,.74);}
@@ -2012,6 +2041,14 @@ input[type="range"]::-webkit-slider-thumb{
 
 /* 实木陈列架（旧唱片直立摆放，点击可翻开——翻开交互由 Trae 接） */
 .shelf-rack{position:relative;width:100%;max-width:320px;margin:0 auto;}
+.seed-label{
+  font-family:var(--serif);font-size:13px;letter-spacing:4px;text-indent:4px;
+  color:rgba(251,246,233,.72);text-align:center;margin-bottom:5px;
+}
+.seed-helper{
+  font-size:10.5px;letter-spacing:1.4px;color:rgba(244,236,219,.48);
+  text-align:center;margin:-1px 0 12px;
+}
 .rack-records{display:flex;align-items:flex-end;justify-content:center;gap:12px;padding:0 10px 4px;position:relative;z-index:2;}
 .series-disc{position:relative;width:56px;aspect-ratio:3/4;border-radius:6px 6px 3px 3px;overflow:hidden;
   cursor:pointer;opacity:.94;

@@ -431,21 +431,23 @@
               <div class="record-sleeve"><img src="assets/cover_evening_primrose.webp" alt="月见草 No.0006"></div>
             </div>
           </button>
-          <p class="hero-no">No.0006 · 今晚这一张</p>
+          <p class="hero-no">今晚新种下 · No.0006</p>
         </div>
 
         <div class="shelf-rack">
+          <p class="seed-label">花园种子</p>
+          <p class="seed-helper">夜渡替新来的夜晚，先留了几颗种子。</p>
           <div class="rack-records">
-            <button type="button" class="series-disc" data-no="No.0002" data-plant="薰衣草" data-words="等一等，香气会自己回来" data-bgm="perfume——mehro" style="--g1:#b8a6d8;--g2:#5f5090">
+            <button type="button" class="series-disc" data-seed-id="No.0002" style="--g1:#b8a6d8;--g2:#5f5090">
               <img src="assets/cover_a_sprig_of_lavender.webp" alt="" onerror="this.classList.add('img-fail')"><span>No.0002</span>
             </button>
-            <button type="button" class="series-disc" data-no="No.0003" data-plant="睡莲" data-words="睡吧，水会将你托住" data-bgm="枕旧书——鸦青" style="--g1:#9fd6cf;--g2:#3f7e86">
+            <button type="button" class="series-disc" data-seed-id="No.0003" style="--g1:#9fd6cf;--g2:#3f7e86">
               <img src="assets/cover_a_water_lily.webp" alt="" onerror="this.classList.add('img-fail')"><span>No.0003</span>
             </button>
-            <button type="button" class="series-disc" data-no="No.0004" data-plant="蓝铃花" data-words="低着头，也在轻轻奏响" data-bgm="DREAM——seventeen" style="--g1:#9bb4e6;--g2:#46568f">
+            <button type="button" class="series-disc" data-seed-id="No.0004" style="--g1:#9bb4e6;--g2:#46568f">
               <img src="assets/cover_a_cluster_of_hanging_bluebells.webp" alt="" onerror="this.classList.add('img-fail')"><span>No.0004</span>
             </button>
-            <button type="button" class="series-disc" data-no="No.0005" data-plant="蒲公英" data-words="松开手，它就会飞翔" data-bgm="春雷——米津玄师" style="--g1:#e8d9a8;--g2:#a98a4f">
+            <button type="button" class="series-disc" data-seed-id="No.0005" style="--g1:#e8d9a8;--g2:#a98a4f">
               <img src="assets/cover_a_dandelion_seed_head.webp" alt="" onerror="this.classList.add('img-fail')"><span>No.0005</span>
             </button>
           </div>
@@ -466,8 +468,12 @@
         <button type="button" class="bloom-close" id="bloom-close" aria-label="关闭">&times;</button>
         <div class="bloom-cover" id="bloom-cover-img"></div>
         <p class="bloom-no" id="bloom-no"></p>
+        <p class="bloom-title" id="bloom-title"></p>
         <p class="bloom-plant" id="bloom-plant"></p>
         <p class="bloom-words" id="bloom-words"></p>
+        <p class="bloom-anchor" id="bloom-anchor"></p>
+        <p class="bloom-sides" id="bloom-sides"></p>
+        <p class="bloom-note" id="bloom-note"></p>
         <div class="bloom-bgm-row">
           <p class="bloom-bgm" id="bloom-bgm"></p>
           <button type="button" class="bloom-play" id="bloom-play-btn" aria-label="播放试听">▶</button>
